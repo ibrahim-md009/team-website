@@ -1,11 +1,11 @@
 /* ==========================================================================
-   NEXORA — site script. Reads content from data.js and renders each page.
+   DARCX — site script. Reads content from data.js and renders each page.
    Handles: language (AR/EN + RTL), theme, mobile menu, scroll states,
    reveal animations, project filter, contact form and per-page SEO.
    ========================================================================== */
 (function () {
   "use strict";
-  const D = NEXORA;
+  const D = DARCX_DATA;
   const body = document.body;
   const ROOT = body.dataset.root || "";
   const PAGE = body.dataset.page;
@@ -27,7 +27,14 @@
   /* ---------- small building blocks ---------- */
   const arrow = '<svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  const logoMark = '<svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="9" cy="9" r="7" fill="var(--sage)"/><path d="M18 2h12v12a12 12 0 0 1-12-12z" fill="var(--sand)" transform="translate(0 0)"/><rect x="2" y="18" width="14" height="12" rx="3" fill="var(--blue)"/><path d="M18 30a6 6 0 0 1 12 0z" fill="var(--olive)" transform="translate(0 -4)"/><circle cx="24" cy="26" r="3" fill="var(--taupe)"/></svg>';
+  /* DARCX monogram — geometry comes from logo.js (single source of truth) */
+  function markSvg(cls) {
+    return '<svg class="' + (cls || "mark") + '" viewBox="' + DARCX_LOGO.viewBox + '" aria-hidden="true" focusable="false">' +
+      DARCX_LOGO.parts.map(p => '<path class="lg-' + p.c + '" d="' + p.d + '"' + (p.r ? ' fill-rule="evenodd"' : "") + "/>").join("") + "</svg>";
+  }
+  function logoHtml() {
+    return markSvg("mark") + '<span class="lw"><b>DARCX</b><small>DIGITAL SOLUTIONS</small></span>';
+  }
 
   const icons = {
     websites: '<svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M6 17h36" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="13" r="1.3" fill="currentColor"/><circle cx="17" cy="13" r="1.3" fill="currentColor"/></svg>',
@@ -36,13 +43,8 @@
     systems: '<svg viewBox="0 0 48 48"><rect x="7" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="27" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="7" y="27" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="34" cy="34" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>'
   };
 
-  /* hero geometry: built from the logo's own shapes in brand colours */
-  const heroGeo = '<svg class="geo" viewBox="0 0 400 400" aria-hidden="true">' +
-    '<circle class="g1" cx="140" cy="140" r="112" fill="var(--sage)"/>' +
-    '<path class="g2" d="M230 20h150v150a150 150 0 0 1-150-150z" fill="var(--sand)"/>' +
-    '<rect class="g3" x="30" y="240" width="170" height="140" rx="34" fill="var(--blue)"/>' +
-    '<path class="g4" d="M220 380a85 85 0 0 1 170 0z" fill="var(--olive)"/>' +
-    '<circle class="g5" cx="300" cy="262" r="30" fill="var(--taupe)"/></svg>';
+  /* hero art: the monogram on a quiet geometric field */
+  const heroGeo = '<div class="hero-mark"><i class="hm-corner"></i><i class="hm-line l1"></i><i class="hm-line l2"></i>' + markSvg("hm-svg") + '</div>';
 
   /* generated preview used until real screenshots are added to data.js */
   function preview(p, big) {
@@ -85,6 +87,7 @@
         '<h1><span class="ln"><span>' + t("h_title") + '</span></span></h1>' +
         '<p class="lead fade">' + t("h_sub") + '</p>' +
         '<div class="btns fade"><a class="btn btn-fill" href="' + url("contact.html") + '">' + t("cta") + arrow + '</a><a class="btn btn-line" href="' + url("projects.html") + '">' + t("h_cta2") + '</a></div>' +
+        '<p class="flow fade">' + t("h_flow").map(x => "<span>" + x + "</span>").join('<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M12 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>') + "</p>" +
         '</div><div class="hero-art fade">' + heroGeo + '</div></div></section>' +
 
         '<section class="band band-sand"><div class="wrap"><div class="sec-h rv"><div><h2>' + t("home_services_t") + '</h2><p>' + t("home_services_p") + '</p></div>' +
@@ -187,7 +190,7 @@
     $("#hdr").innerHTML =
       '<a class="skip" href="#app">' + t("skip") + '</a>' +
       '<header class="nav" id="nav"><div class="wrap nav-in">' +
-      '<a class="logo" href="' + url("index.html") + '" aria-label="' + t("brand") + '">' + logoMark + '<span>' + t("brand") + '</span></a>' +
+      '<a class="logo" href="' + url("index.html") + '" aria-label="' + t("brand") + '">' + logoHtml() + '</a>' +
       '<nav class="links" aria-label="Main">' + links + '</nav>' +
       '<div class="tools"><div class="tools-d">' + controls() + '<a class="btn btn-fill btn-sm" href="' + url("contact.html") + '">' + t("cta") + '</a></div>' +
       '<button class="burger" id="burger" aria-label="' + t("menu") + '" aria-expanded="false" aria-controls="mm"><span></span><span></span></button></div></div></header>' +
@@ -204,7 +207,7 @@
     if (!ch.length) ch.push([url("contact.html"), t("nav_contact")]);
     const fl = NAV.filter(n => n[0] !== "process").map(n => '<a href="' + url(n[1]) + '">' + t("nav_" + n[0]) + '</a>').join("");
     $("#ftr").innerHTML = '<footer class="foot"><div class="foot-bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="wrap foot-in">' +
-      '<div class="foot-brand"><a class="logo" href="' + url("index.html") + '">' + logoMark + '<span>' + t("brand") + '</span></a><p>' + t("f_desc") + '</p></div>' +
+      '<div class="foot-brand"><a class="logo" href="' + url("index.html") + '" aria-label="' + t("brand") + '">' + logoHtml() + '</a><p>' + t("f_desc") + '</p><p class="foot-tag">' + t("f_tag") + '</p></div>' +
       '<div><h3>' + t("f_nav") + '</h3>' + fl + '</div>' +
       '<div><h3>' + t("f_serv") + '</h3>' + D.services.map(s => '<a href="' + url("services.html#" + s.id) + '">' + L(s.name) + '</a>').join("") + '</div>' +
       '<div><h3>' + t("f_contact") + '</h3>' + ch.map(x => '<a href="' + x[0] + '"' + (x[0].startsWith("http") ? ' target="_blank" rel="noopener"' : "") + '>' + x[1] + '</a>').join("") + '</div>' +
@@ -281,7 +284,7 @@
 
   function toggleTheme() {
     const n = doc.dataset.theme === "dark" ? "light" : "dark";
-    doc.classList.add("tx"); doc.dataset.theme = n; store.set("nx-theme", n);
+    doc.classList.add("tx"); doc.dataset.theme = n; store.set("dx-theme", n);
     setTimeout(() => doc.classList.remove("tx"), 500);
   }
 
@@ -292,7 +295,7 @@
 
   function setLang(l) {
     if (l === lang) return;
-    lang = l; store.set("nx-lang", l);
+    lang = l; store.set("dx-lang", l);
     body.classList.add("swap");
     setTimeout(() => {
       doc.lang = l; doc.dir = l === "ar" ? "rtl" : "ltr";
@@ -315,6 +318,6 @@
   addEventListener("scroll", () => { if (!tick) { tick = true; requestAnimationFrame(() => { onScroll(); tick = false; }); } }, { passive: true });
   addEventListener("keydown", e => { if (e.key === "Escape" && $("#mm").classList.contains("open")) { menu(false); $("#burger").focus(); } });
   addEventListener("resize", () => { if (innerWidth > 980) menu(false); });
-  matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => { if (!store.get("nx-theme")) doc.dataset.theme = e.matches ? "light" : "dark"; });
+  matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => { if (!store.get("dx-theme")) doc.dataset.theme = e.matches ? "light" : "dark"; });
   addEventListener("pageshow", e => { if (e.persisted) body.classList.remove("swap"); });
 })();

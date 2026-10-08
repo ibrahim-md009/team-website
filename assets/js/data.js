@@ -1,9 +1,9 @@
 /* ==========================================================================
-   NEXORA — central content file.
+   DARCX — central content file.
    Everything editable lives here: contact details, projects, services,
    process steps, technologies and all Arabic / English interface text.
    ========================================================================== */
-const NEXORA = {
+const DARCX_DATA = {
 
   /* ---- Contact channels. Leave a value empty to hide that channel. ----
      whatsapp: number with country code, digits only (e.g. "9665xxxxxxxx")
@@ -118,11 +118,11 @@ const NEXORA = {
   /* ---- Interface text ---- */
   i18n: {
     ar: {
-      brand: "نيكسورا", skip: "تخطي إلى المحتوى",
+      brand: "DARCX", skip: "تخطي إلى المحتوى",
       nav_home: "الرئيسية", nav_projects: "أعمالنا", nav_services: "خدماتنا", nav_process: "طريقة العمل", nav_about: "من نحن", nav_contact: "تواصل معنا",
       cta: "ابدأ مشروعك", menu: "القائمة", close: "إغلاق", theme: "تبديل المظهر", language: "اللغة", more: "عرض المشروع",
       h_title: "نبني منتجات رقمية تعمل.", h_sub: "مواقع وتطبيقات وأنظمة إدارة مبنية حول عملك.",
-      h_cta2: "شاهد أعمالنا", h_badge: "استوديو برمجيات",
+      h_cta2: "شاهد أعمالنا", h_badge: "استوديو برمجيات", h_flow: ["أفكار", "كود", "حلول حقيقية"], f_tag: "نبني الرقمي معًا.",
       home_services_t: "ما الذي نبنيه", home_services_p: "أربع خدمات تغطي حضورك الرقمي وأنظمة عملك.",
       home_projects_t: "أعمال مختارة", home_projects_p: "مشاريع حقيقية نفذناها من الفكرة حتى الإطلاق.",
       all_projects: "كل الأعمال", all_services: "كل الخدمات",
@@ -133,9 +133,9 @@ const NEXORA = {
       f_all: "الكل", f_web: "مواقع إلكترونية", f_sys: "أنظمة إدارة أعمال",
       d_overview: "نظرة عامة", d_features: "أبرز المزايا", d_tech: "التقنيات", d_problem: "المشكلة", d_solution: "حلّنا",
       d_gallery: "معرض الصور", d_back: "كل الأعمال", d_next: "المشروع التالي", d_cta_t: "تريد مشروعًا مشابهًا؟", d_cta_p: "تواصل معنا وأخبرنا بما تحتاجه.",
-      a_page_t: "من نحن", a_page_p: "نيكسورا استوديو برمجيات صغير، نصمم ونبني مواقع وتطبيقات وأنظمة تخدم الأعمال.",
+      a_page_t: "من نحن", a_page_p: "DARCX استوديو برمجيات صغير، نصمم ونبني مواقع وتطبيقات وأنظمة تخدم الأعمال.",
       a_story_t: "قصتنا",
-      a_story: ["نيكسورا استوديو يركّز على بناء منتجات رقمية تعمل فعلًا لأصحابها: مواقع تعرّف بالنشاط، ولوحات تحكم تُدار بسهولة، وأنظمة تنظّم العمل اليومي.",
+      a_story: ["DARCX استوديو يركّز على بناء منتجات رقمية تعمل فعلًا لأصحابها: مواقع تعرّف بالنشاط، ولوحات تحكم تُدار بسهولة، وأنظمة تنظّم العمل اليومي.",
                 "نعمل بفريق صغير حتى يبقى كل مشروع تحت عناية مباشرة، ونصمم كل واجهة بالعربية والإنجليزية وبالوضعين الفاتح والداكن منذ البداية."],
       a_values_t: "كيف نفكر",
       a_values: [["بساطة", "نفضّل الحل الواضح الذي يفهمه المستخدم من أول نظرة."], ["سرعة", "صفحات خفيفة وتجربة سلسة على الجوال قبل الحاسب."], ["عناية", "نهتم بالتفاصيل: الخطوط، المسافات، واتجاه الصفحة بالعربية."]],
@@ -147,15 +147,15 @@ const NEXORA = {
       c_ok_wa: "تم فتح واتساب برسالتك.", c_ok_mail: "تم فتح البريد برسالتك.", c_ok_copy: "تم نسخ رسالتك. الصقها في وسيلة التواصل التي تفضلها.",
       c_wa: "واتساب", c_ig: "إنستغرام", c_mail: "البريد الإلكتروني", c_none: "استخدم نموذج الطلب وسنعود إليك.",
       f_desc: "استوديو برمجيات يبني مواقع وتطبيقات وأنظمة إدارة مبنية حول عملك.", f_nav: "الصفحات", f_serv: "الخدمات", f_contact: "التواصل",
-      f_rights: "© 2026 نيكسورا. جميع الحقوق محفوظة.",
+      f_rights: "© 2026 DARCX. جميع الحقوق محفوظة.",
       nf_t: "الصفحة غير موجودة", nf_p: "المشروع الذي تبحث عنه غير متوفر."
     },
     en: {
-      brand: "Nexora", skip: "Skip to content",
+      brand: "DARCX", skip: "Skip to content",
       nav_home: "Home", nav_projects: "Projects", nav_services: "Services", nav_process: "Process", nav_about: "About", nav_contact: "Contact",
       cta: "Start your project", menu: "Menu", close: "Close", theme: "Toggle theme", language: "Language", more: "View project",
       h_title: "We build digital products that work.", h_sub: "Websites, applications and business systems built around your business.",
-      h_cta2: "See our work", h_badge: "Software studio",
+      h_cta2: "See our work", h_badge: "Software studio", h_flow: ["IDEAS", "CODE", "REAL SOLUTIONS"], f_tag: "Build Digital Together.",
       home_services_t: "What we build", home_services_p: "Four services covering your digital presence and the systems behind your business.",
       home_projects_t: "Selected projects", home_projects_p: "Real projects, taken from idea to launch.",
       all_projects: "All projects", all_services: "All services",
@@ -166,9 +166,9 @@ const NEXORA = {
       f_all: "All", f_web: "Websites", f_sys: "Business systems",
       d_overview: "Overview", d_features: "Main features", d_tech: "Technologies", d_problem: "The problem", d_solution: "Our solution",
       d_gallery: "Gallery", d_back: "All projects", d_next: "Next project", d_cta_t: "Want something similar?", d_cta_p: "Get in touch and tell us what you need.",
-      a_page_t: "About Nexora", a_page_p: "Nexora is a small software studio that designs and builds websites, applications and systems for businesses.",
+      a_page_t: "About DARCX", a_page_p: "DARCX is a small software studio that designs and builds websites, applications and systems for businesses.",
       a_story_t: "Our story",
-      a_story: ["Nexora is a studio focused on building digital products that actually work for their owners: websites that introduce a business, dashboards that are easy to manage, and systems that organise daily work.",
+      a_story: ["DARCX is a studio focused on building digital products that actually work for their owners: websites that introduce a business, dashboards that are easy to manage, and systems that organise daily work.",
                 "We work as a small team so every project gets direct attention, and we design every interface in Arabic and English, light and dark, from the start."],
       a_values_t: "How we think",
       a_values: [["Simplicity", "We prefer the clear solution a user understands at first glance."], ["Speed", "Light pages and a smooth experience on mobile first, then desktop."], ["Care", "We care about details: type, spacing and proper Arabic page direction."]],
@@ -180,18 +180,18 @@ const NEXORA = {
       c_ok_wa: "WhatsApp opened with your message.", c_ok_mail: "Your email app opened with your message.", c_ok_copy: "Your message was copied. Paste it into the channel you prefer.",
       c_wa: "WhatsApp", c_ig: "Instagram", c_mail: "Email", c_none: "Use the inquiry form and we'll get back to you.",
       f_desc: "A software studio building websites, applications and business systems around your business.", f_nav: "Pages", f_serv: "Services", f_contact: "Contact",
-      f_rights: "© 2026 Nexora. All rights reserved.",
+      f_rights: "© 2026 DARCX. All rights reserved.",
       nf_t: "Page not found", nf_p: "The project you're looking for isn't available."
     }
   },
 
   /* ---- Page titles + descriptions (SEO) ---- */
   seo: {
-    home:     { ar: ["نيكسورا | نبني منتجات رقمية تعمل", "استوديو برمجيات يبني مواقع وتطبيقات وأنظمة إدارة أعمال مبنية حول عملك."], en: ["Nexora | We build digital products that work", "A software studio building websites, applications and business systems around your business."] },
-    services: { ar: ["خدماتنا | نيكسورا", "مواقع إلكترونية، لوحات تحكم، تطبيقات جوال وأنظمة إدارة أعمال."], en: ["Services | Nexora", "Websites, dashboards, mobile applications and business management systems."] },
-    projects: { ar: ["أعمالنا | نيكسورا", "مشاريع نيكسورا: البلد للمياه، كيو ستوديو، نظام نقاط البيع ونظام إدارة الاستوديو."], en: ["Projects | Nexora", "Nexora projects: El Balad Water, KEO Studio, the Business POS System and the Studio Management System."] },
-    about:    { ar: ["من نحن | نيكسورا", "تعرّف على نيكسورا ومهاراتها والتقنيات التي تستخدمها."], en: ["About | Nexora", "Get to know Nexora, its skills and the technologies it uses."] },
-    process:  { ar: ["طريقة العمل | نيكسورا", "كيف نعمل من الفكرة حتى الإطلاق."], en: ["Process | Nexora", "How we work from idea to launch."] },
-    contact:  { ar: ["تواصل معنا | نيكسورا", "أرسل طلب مشروعك إلى نيكسورا."], en: ["Contact | Nexora", "Send your project inquiry to Nexora."] }
+    home:     { ar: ["DARCX | نبني منتجات رقمية تعمل", "استوديو برمجيات يبني مواقع وتطبيقات وأنظمة إدارة أعمال مبنية حول عملك."], en: ["DARCX | We build digital products that work", "A software studio building websites, applications and business systems around your business."] },
+    services: { ar: ["خدماتنا | DARCX", "مواقع إلكترونية، لوحات تحكم، تطبيقات جوال وأنظمة إدارة أعمال."], en: ["Services | DARCX", "Websites, dashboards, mobile applications and business management systems."] },
+    projects: { ar: ["أعمالنا | DARCX", "مشاريع DARCX: البلد للمياه، كيو ستوديو، نظام نقاط البيع ونظام إدارة الاستوديو."], en: ["Projects | DARCX", "DARCX projects: El Balad Water, KEO Studio, the Business POS System and the Studio Management System."] },
+    about:    { ar: ["من نحن | DARCX", "تعرّف على DARCX ومهاراتها والتقنيات التي تستخدمها."], en: ["About | DARCX", "Get to know DARCX, its skills and the technologies it uses."] },
+    process:  { ar: ["طريقة العمل | DARCX", "كيف نعمل من الفكرة حتى الإطلاق."], en: ["Process | DARCX", "How we work from idea to launch."] },
+    contact:  { ar: ["تواصل معنا | DARCX", "أرسل طلب مشروعك إلى DARCX."], en: ["Contact | DARCX", "Send your project inquiry to DARCX."] }
   }
 };
