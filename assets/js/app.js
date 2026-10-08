@@ -7,9 +7,10 @@
   "use strict";
   const D = DARCX_DATA;
   const body = document.body;
-  const ROOT = body.dataset.root || "";
-  const PAGE = body.dataset.page;
-  const SLUG = body.dataset.slug || "";
+  /* absolute site root, derived from this script's own location (works in any sub-folder) */
+  const BASE = new URL("../../", document.currentScript.src).href;
+  let PAGE = body.dataset.page;
+  let SLUG = body.dataset.slug || "";
   const doc = document.documentElement;
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -21,7 +22,7 @@
   let lang = doc.lang === "en" ? "en" : "ar";
   const t = k => D.i18n[lang][k];
   const L = o => o[lang];
-  const url = p => ROOT + p;
+  const url = p => BASE + p;
   const projectUrl = s => url("projects/" + s + ".html");
 
   /* ---------- small building blocks ---------- */
@@ -173,7 +174,7 @@
 
   /* ---------- top bar, bottom navigation, footer ---------- */
   const NAV = [["home", "index.html"], ["projects", "projects.html"], ["services", "services.html"], ["process", "process.html"], ["about", "about.html"], ["contact", "contact.html"]];
-  const current = PAGE === "project" ? "projects" : PAGE;
+  const cur = () => (PAGE === "project" ? "projects" : PAGE);
   const ni = {
     home: '<path d="M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10"/>',
     projects: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
@@ -194,8 +195,8 @@
       '<header class="nav" id="nav"><div class="wrap nav-in">' +
       '<a class="logo" href="' + url("index.html") + '" aria-label="DARCX">' + logoImg("mark") + '</a>' +
       '<div class="tools">' + controls() + '</div></div></header>' +
-      '<nav class="bnav" id="bnav" aria-label="Main"><div class="bnav-in">' +
-      NAV.map(n => '<a href="' + url(n[1]) + '"' + (n[0] === current ? ' aria-current="page"' : "") + '><svg viewBox="0 0 24 24" aria-hidden="true">' + ni[n[0]] + '</svg><span>' + t("nav_" + n[0]) + '</span></a>').join("") +
+      '<nav class="bnav" id="bnav" aria-label="Main"><div class="wrap bnav-in">' +
+      NAV.map(n => '<a href="' + url(n[1]) + '"' + (n[0] === cur() ? ' aria-current="page"' : "") + ' data-p="' + n[0] + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + ni[n[0]] + '</svg><span>' + t("nav_" + n[0]) + '</span></a>').join("") +
       '</div></nav>';
   }
 
@@ -251,7 +252,7 @@
       if (sv && $("#cs option[value='" + sv + "']")) $("#cs").value = sv;
       f.addEventListener("submit", submitForm);
     }
-    if (location.hash && $(location.hash)) setTimeout(() => $(location.hash).scrollIntoView(), 60);
+    if (location.hash && $(location.hash)) setTimeout(() => $(location.hash).scrollIntoView(), 80);
   }
 
   function submitForm(e) {
@@ -297,6 +298,40 @@
     const tl = $("#tl");
     if (tl) { const r = tl.getBoundingClientRect(); tl.style.setProperty("--p", Math.min(1, Math.max(0, (innerHeight * 0.65 - r.top) / r.height))); }
   }
+
+  /* ---------- in-page navigation (no reload, no flash) ---------- */
+  const PAGES = ["services", "projects", "about", "process", "contact"];
+  function routeOf(href) {
+    let u; try { u = new URL(href, location.href); } catch (e) { return null; }
+    if (!u.href.startsWith(BASE)) return null;
+    const path = u.href.slice(BASE.length).split(/[?#]/)[0].replace(/\.html$/, "").replace(/\/$/, "");
+    if (path === "" || path === "index") return { page: "home", slug: "", u };
+    if (PAGES.includes(path)) return { page: path, slug: "", u };
+    const m = path.match(/^projects\/([\w-]+)$/);
+    if (m && D.projects.some(p => p.slug === m[1])) return { page: "project", slug: m[1], u };
+    return null;
+  }
+  function updateNav() {
+    $$("#bnav a").forEach(x => { if (x.dataset.p === cur()) x.setAttribute("aria-current", "page"); else x.removeAttribute("aria-current"); });
+  }
+  function go(r, push) {
+    const same = r.page === PAGE && r.slug === SLUG;
+    if (push) history.pushState(null, "", r.u.href);
+    if (same) { if (r.u.hash && $(r.u.hash)) $(r.u.hash).scrollIntoView(); else scrollTo({ top: 0, behavior: "smooth" }); return; }
+    PAGE = r.page; SLUG = r.slug; body.dataset.page = PAGE; body.dataset.slug = SLUG;
+    scrollTo({ top: 0, behavior: "instant" });
+    renderPage(); updateNav(); onScroll();
+    const m = $("#app"); m.style.animation = "none"; void m.offsetWidth; m.style.animation = "";
+  }
+  document.addEventListener("click", e => {
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const el = e.target.closest("a[href]");
+    if (!el || el.target || el.hasAttribute("download")) return;
+    const r = routeOf(el.href); if (!r) return;
+    e.preventDefault(); go(r, true);
+  });
+  addEventListener("popstate", () => { const r = routeOf(location.href); if (r) go(r, false); });
+  setTimeout(() => { const b = $("#bnav"); if (b) b.classList.add("still"); }, 1200);
 
   /* ---------- init ---------- */
   renderHeader(); renderFooter(); renderPage(); bindShell(); onScroll();
