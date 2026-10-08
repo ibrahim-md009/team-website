@@ -163,7 +163,7 @@
         '<section class="sec"><div class="wrap cgrid"><form class="cform rv" id="cform" novalidate><h2>' + t("c_form_t") + '</h2>' +
         '<div class="fld"><input id="cn" placeholder=" " autocomplete="name" required><label for="cn">' + t("c_name") + '</label></div>' +
         '<div class="fld"><input id="cc" placeholder=" " autocomplete="email" required dir="auto"><label for="cc">' + t("c_contact") + '</label></div>' +
-        '<div class="fld fld-s"><select id="cs">' + opts + '</select><label for="cs">' + t("c_service") + '</label></div>' +
+        '<div class="fld fld-s"><button type="button" class="sel" id="csb" aria-haspopup="dialog" aria-expanded="false"><span id="csv"></span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button><label>' + t("c_service") + '</label><select id="cs" tabindex="-1" aria-hidden="true">' + opts + '</select></div>' +
         '<div class="fld"><textarea id="cm" placeholder=" " required></textarea><label for="cm">' + t("c_msg") + '</label></div>' +
         '<button class="btn btn-fill" type="submit">' + t("c_send") + arrow + '</button><p class="note" id="cnote" role="status"></p></form>' +
         '<aside class="cside rv" style="--d:.1s"><h2>' + t("c_methods") + '</h2>' +
@@ -195,9 +195,9 @@
       '<header class="nav" id="nav"><div class="wrap nav-in">' +
       '<a class="logo" href="' + url("index.html") + '" aria-label="DARCX">' + logoImg("mark") + '</a>' +
       '<div class="tools">' + controls() + '</div></div></header>' +
-      '<nav class="bnav" id="bnav" aria-label="Main"><div class="wrap bnav-in">' +
-      NAV.map(n => '<a href="' + url(n[1]) + '"' + (n[0] === cur() ? ' aria-current="page"' : "") + ' data-p="' + n[0] + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + ni[n[0]] + '</svg><span>' + t("nav_" + n[0]) + '</span></a>').join("") +
-      '</div></nav>';
+      '<nav class="bnav" id="bnav" aria-label="Main"><div class="wrap bnav-in"><div class="bnav-track" id="btrack" style="--n:' + NAV.length + ';--idx:' + NAV.findIndex(n => n[0] === cur()) + '"><i class="bnav-ind" aria-hidden="true"></i>' +
+      NAV.map(n => '<a href="' + url(n[1]) + '" draggable="false"' + (n[0] === cur() ? ' aria-current="page"' : "") + ' data-p="' + n[0] + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + ni[n[0]] + '</svg><span>' + t("nav_" + n[0]) + '</span></a>').join("") +
+      '</div></div></nav>';
   }
 
   function renderFooter() {
@@ -236,6 +236,7 @@
   function bindShell() {
     $$(".js-lang").forEach(b => b.onclick = () => setLang(b.dataset.l));
     $$(".js-theme").forEach(b => b.onclick = toggleTheme);
+    bindBar();
   }
 
   function bindPage() {
@@ -250,6 +251,7 @@
     if (f) {
       const sv = new URLSearchParams(location.search).get("service");
       if (sv && $("#cs option[value='" + sv + "']")) $("#cs").value = sv;
+      setSel(); $("#csb").onclick = openSheet;
       f.addEventListener("submit", submitForm);
     }
     if (location.hash && $(location.hash)) setTimeout(() => $(location.hash).scrollIntoView(), 80);
@@ -267,7 +269,7 @@
     if (ct.whatsapp) { window.open("https://wa.me/" + ct.whatsapp + "?text=" + encodeURIComponent(text), "_blank", "noopener"); note.textContent = t("c_ok_wa"); }
     else if (ct.email) { location.href = "mailto:" + ct.email + "?subject=" + encodeURIComponent(t("brand") + " — " + sOpt) + "&body=" + encodeURIComponent(text); note.textContent = t("c_ok_mail"); }
     else { (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).catch(() => {}); note.textContent = t("c_ok_copy"); }
-    e.target.reset();
+    e.target.reset(); setSel();
   }
 
   function toggleTheme() {
@@ -277,6 +279,7 @@
   }
 
   function renderPage() {
+    closeSheet(true);
     $("#app").innerHTML = (pages[PAGE] || pages.home)();
     meta(); bindPage();
   }
@@ -299,6 +302,64 @@
     if (tl) { const r = tl.getBoundingClientRect(); tl.style.setProperty("--p", Math.min(1, Math.max(0, (innerHeight * 0.65 - r.top) / r.height))); }
   }
 
+  /* ---------- bottom sheet picker (replaces the native select) ---------- */
+  function setSel() {
+    const s = $("#cs"), v = $("#csv"); if (s && v) v.textContent = s.selectedOptions[0].textContent;
+  }
+  function closeSheet(instant) {
+    const sh = $("#sheet"); if (!sh) return;
+    sh.classList.remove("open"); body.classList.remove("lock");
+    const b = $("#csb"); if (b) b.setAttribute("aria-expanded", "false");
+    if (instant) sh.remove(); else setTimeout(() => sh.remove(), 450);
+  }
+  function openSheet() {
+    const sel = $("#cs"); if (!sel || $("#sheet")) return;
+    const accent = v => { const s = D.services.find(x => x.id === v); return s ? s.accent : "var(--sand)"; };
+    const sh = document.createElement("div"); sh.id = "sheet"; sh.className = "sheet";
+    sh.innerHTML = '<div class="sheet-bg"></div><div class="sheet-p" role="dialog" aria-modal="true" aria-label="' + t("c_service") + '"><div class="sheet-grab"><i></i></div><h3>' + t("c_service") + '</h3><ul>' +
+      [...sel.options].map((o, i) => '<li style="--i:' + i + '"><button type="button" class="opt' + (o.value === sel.value ? " on" : "") + '" data-v="' + o.value + '"><span class="svc-dot" style="background:' + accent(o.value) + '"></span><span>' + o.textContent + '</span><i class="tick"></i></button></li>').join("") + '</ul></div>';
+    document.body.appendChild(sh); body.classList.add("lock"); $("#csb").setAttribute("aria-expanded", "true");
+    requestAnimationFrame(() => requestAnimationFrame(() => sh.classList.add("open")));
+    sh.addEventListener("click", e => {
+      if (e.target.classList.contains("sheet-bg")) return closeSheet();
+      const o = e.target.closest(".opt"); if (!o) return;
+      sel.value = o.dataset.v; setSel(); $$(".opt", sh).forEach(x => x.classList.toggle("on", x === o)); setTimeout(closeSheet, 160);
+    });
+    const p = $(".sheet-p", sh), g = $(".sheet-grab", sh); let y0 = null, dy = 0;
+    g.addEventListener("pointerdown", e => { y0 = e.clientY; g.setPointerCapture(e.pointerId); p.style.transition = "none"; });
+    g.addEventListener("pointermove", e => { if (y0 === null) return; dy = Math.max(0, e.clientY - y0); p.style.transform = "translateY(" + dy + "px)"; });
+    const end = () => { if (y0 === null) return; y0 = null; p.style.transition = ""; p.style.transform = ""; if (dy > 80) closeSheet(); dy = 0; };
+    g.addEventListener("pointerup", end); g.addEventListener("pointercancel", end);
+    setTimeout(() => { const f = $(".opt.on", sh) || $(".opt", sh); if (f) f.focus({ preventScroll: true }); }, 350);
+  }
+  addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+
+  /* ---------- swipe along the bottom bar to switch pages (like Telegram's tab bar) ---------- */
+  function bindBar() {
+    const tr = $("#btrack"); if (!tr) return;
+    const items = $$("a", tr), rtl = () => doc.dir === "rtl";
+    let sx = 0, id = null, drag = false, last = -1;
+    const frac = x => { const r = tr.getBoundingClientRect(), w = r.width / items.length; return (rtl() ? r.right - x : x - r.left) / w - 0.5; };
+    tr.addEventListener("pointerdown", e => { if (e.pointerType === "mouse" && e.button) return; sx = e.clientX; id = e.pointerId; drag = false; });
+    tr.addEventListener("pointermove", e => {
+      if (id !== e.pointerId) return;
+      if (!drag) { if (Math.abs(e.clientX - sx) < 10) return; drag = true; tr.classList.add("drag"); try { tr.setPointerCapture(id); } catch (_) {} }
+      const f = Math.min(items.length - 1, Math.max(0, frac(e.clientX))); tr.style.setProperty("--idx", f);
+      const k = Math.round(f);
+      if (k !== last) { last = k; items.forEach((x, i) => x.classList.toggle("hot", i === k)); if (navigator.vibrate) navigator.vibrate(6); }
+    });
+    const end = e => {
+      if (id !== e.pointerId) return; id = null; if (!drag) return; drag = false;
+      const k = Math.max(0, Math.min(items.length - 1, Math.round(parseFloat(tr.style.getPropertyValue("--idx")) || 0)));
+      tr.classList.remove("drag"); items.forEach(x => x.classList.remove("hot")); last = -1;
+      skipClick = true; setTimeout(() => { skipClick = false; }, 350);
+      tr.style.setProperty("--idx", k);
+      if (items[k].dataset.p === cur()) return;
+      const r = routeOf(items[k].href); if (r) go(r, true);
+    };
+    tr.addEventListener("pointerup", end); tr.addEventListener("pointercancel", end);
+  }
+
   /* ---------- in-page navigation (no reload, no flash) ---------- */
   const PAGES = ["services", "projects", "about", "process", "contact"];
   function routeOf(href) {
@@ -313,6 +374,7 @@
   }
   function updateNav() {
     $$("#bnav a").forEach(x => { if (x.dataset.p === cur()) x.setAttribute("aria-current", "page"); else x.removeAttribute("aria-current"); });
+    const tr = $("#btrack"); if (tr) tr.style.setProperty("--idx", NAV.findIndex(n => n[0] === cur()));
   }
   function go(r, push) {
     const same = r.page === PAGE && r.slug === SLUG;
@@ -323,7 +385,9 @@
     renderPage(); updateNav(); onScroll();
     const m = $("#app"); m.style.animation = "none"; void m.offsetWidth; m.style.animation = "";
   }
+  let skipClick = false;
   document.addEventListener("click", e => {
+    if (skipClick) { e.preventDefault(); e.stopPropagation(); return; }
     if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const el = e.target.closest("a[href]");
     if (!el || el.target || el.hasAttribute("download")) return;
