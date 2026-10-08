@@ -22,7 +22,7 @@ TPL = """<!DOCTYPE html>
 <meta property="og:type" content="website"><meta property="og:site_name" content="DARCX">
 <meta property="og:title" content="{title}"><meta property="og:description" content="{desc}"><meta property="og:locale" content="ar_AR">
 <meta name="theme-color" content="#0E1116">
-<link rel="icon" href="{root}assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{root}assets/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="{root}assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,7 +39,6 @@ d.lang=l;d.dir=l==="ar"?"rtl":"ltr";d.dataset.theme=t;})();
 <main id="app"><noscript><p style="padding:140px 24px">DARCX — Digital Solutions. {desc}</p></noscript></main>
 <div id="ftr"></div>
 <script src="{root}assets/js/data.js"></script>
-<script src="{root}assets/js/logo.js"></script>
 <script src="{root}assets/js/app.js"></script>
 </body>
 </html>

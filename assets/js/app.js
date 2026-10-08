@@ -27,14 +27,9 @@
   /* ---------- small building blocks ---------- */
   const arrow = '<svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-  /* DARCX monogram — geometry comes from logo.js (single source of truth) */
-  function markSvg(cls) {
-    return '<svg class="' + (cls || "mark") + '" viewBox="' + DARCX_LOGO.viewBox + '" aria-hidden="true" focusable="false">' +
-      DARCX_LOGO.parts.map(p => '<path class="lg-' + p.c + '" d="' + p.d + '"' + (p.r ? ' fill-rule="evenodd"' : "") + "/>").join("") + "</svg>";
-  }
-  function logoHtml() {
-    return markSvg("mark") + '<span class="lw"><b>DARCX</b><small>DIGITAL SOLUTIONS</small></span>';
-  }
+  /* The OFFICIAL DARCX monogram image (assets/logo/darcx-monogram.png) is used everywhere */
+  const LOGO = url("assets/logo/darcx-monogram.png");
+  function logoImg(cls) { return '<img class="' + (cls || "mark") + '" src="' + LOGO + '" alt="DARCX" width="584" height="339" decoding="async">'; }
 
   const icons = {
     websites: '<svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M6 17h36" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="13" r="1.3" fill="currentColor"/><circle cx="17" cy="13" r="1.3" fill="currentColor"/></svg>',
@@ -43,8 +38,8 @@
     systems: '<svg viewBox="0 0 48 48"><rect x="7" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="27" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="7" y="27" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="34" cy="34" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>'
   };
 
-  /* hero art: the monogram on a quiet geometric field */
-  const heroGeo = '<div class="hero-mark"><i class="hm-corner"></i><i class="hm-line l1"></i><i class="hm-line l2"></i>' + markSvg("hm-svg") + '</div>';
+  /* hero art: the official monogram on a quiet geometric field */
+  const heroGeo = '<div class="hero-mark"><i class="hm-corner"></i><i class="hm-line l1"></i><i class="hm-line l2"></i>' + logoImg("hm-svg") + '</div>';
 
   /* generated preview used until real screenshots are added to data.js */
   function preview(p, big) {
@@ -176,9 +171,17 @@
     }
   };
 
-  /* ---------- header, menu, footer ---------- */
+  /* ---------- top bar, bottom navigation, footer ---------- */
   const NAV = [["home", "index.html"], ["projects", "projects.html"], ["services", "services.html"], ["process", "process.html"], ["about", "about.html"], ["contact", "contact.html"]];
   const current = PAGE === "project" ? "projects" : PAGE;
+  const ni = {
+    home: '<path d="M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10"/>',
+    projects: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
+    services: '<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
+    process: '<circle cx="5.5" cy="6" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/><path d="M8 6h6a4 4 0 0 1 0 8h-4a4 4 0 0 0 0 4h6"/>',
+    about: '<circle cx="12" cy="8" r="4"/><path d="M4.5 20c.8-4 3.7-6 7.5-6s6.7 2 7.5 6"/>',
+    contact: '<path d="M4 5h16v11H9l-5 4z"/>'
+  };
 
   function controls() {
     return '<div class="lang" role="group" aria-label="' + t("language") + '"><button class="js-lang" data-l="ar" aria-pressed="' + (lang === "ar") + '">AR</button><button class="js-lang" data-l="en" aria-pressed="' + (lang === "en") + '">EN</button></div>' +
@@ -186,17 +189,14 @@
   }
 
   function renderHeader() {
-    const links = NAV.map(n => '<a href="' + url(n[1]) + '"' + (n[0] === current ? ' aria-current="page"' : "") + '>' + t("nav_" + n[0]) + '</a>').join("");
     $("#hdr").innerHTML =
       '<a class="skip" href="#app">' + t("skip") + '</a>' +
       '<header class="nav" id="nav"><div class="wrap nav-in">' +
-      '<a class="logo" href="' + url("index.html") + '" aria-label="' + t("brand") + '">' + logoHtml() + '</a>' +
-      '<nav class="links" aria-label="Main">' + links + '</nav>' +
-      '<div class="tools"><div class="tools-d">' + controls() + '<a class="btn btn-fill btn-sm" href="' + url("contact.html") + '">' + t("cta") + '</a></div>' +
-      '<button class="burger" id="burger" aria-label="' + t("menu") + '" aria-expanded="false" aria-controls="mm"><span></span><span></span></button></div></div></header>' +
-      '<div class="mm" id="mm" aria-hidden="true"><div class="mm-shapes" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="wrap mm-in">' +
-      '<nav aria-label="Mobile">' + NAV.map((n, i) => '<a href="' + url(n[1]) + '" style="--i:' + i + '"' + (n[0] === current ? ' aria-current="page"' : "") + '><small>' + String(i + 1).padStart(2, "0") + '</small>' + t("nav_" + n[0]) + '</a>').join("") + '</nav>' +
-      '<div class="mm-foot" style="--i:6"><a class="btn btn-sage btn-block" href="' + url("contact.html") + '">' + t("cta") + arrow + '</a><div class="mm-ctl">' + controls() + '</div></div></div></div>';
+      '<a class="logo" href="' + url("index.html") + '" aria-label="DARCX">' + logoImg("mark") + '</a>' +
+      '<div class="tools">' + controls() + '</div></div></header>' +
+      '<nav class="bnav" id="bnav" aria-label="Main"><div class="bnav-in">' +
+      NAV.map(n => '<a href="' + url(n[1]) + '"' + (n[0] === current ? ' aria-current="page"' : "") + '><svg viewBox="0 0 24 24" aria-hidden="true">' + ni[n[0]] + '</svg><span>' + t("nav_" + n[0]) + '</span></a>').join("") +
+      '</div></nav>';
   }
 
   function renderFooter() {
@@ -204,14 +204,11 @@
     if (c.whatsapp) ch.push(['https://wa.me/' + c.whatsapp, t("c_wa")]);
     if (c.instagram) ch.push(['https://instagram.com/' + c.instagram, t("c_ig")]);
     if (c.email) ch.push(['mailto:' + c.email, t("c_mail")]);
-    if (!ch.length) ch.push([url("contact.html"), t("nav_contact")]);
-    const fl = NAV.filter(n => n[0] !== "process").map(n => '<a href="' + url(n[1]) + '">' + t("nav_" + n[0]) + '</a>').join("");
-    $("#ftr").innerHTML = '<footer class="foot"><div class="foot-bar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="wrap foot-in">' +
-      '<div class="foot-brand"><a class="logo" href="' + url("index.html") + '" aria-label="' + t("brand") + '">' + logoHtml() + '</a><p>' + t("f_desc") + '</p><p class="foot-tag">' + t("f_tag") + '</p></div>' +
-      '<div><h3>' + t("f_nav") + '</h3>' + fl + '</div>' +
-      '<div><h3>' + t("f_serv") + '</h3>' + D.services.map(s => '<a href="' + url("services.html#" + s.id) + '">' + L(s.name) + '</a>').join("") + '</div>' +
-      '<div><h3>' + t("f_contact") + '</h3>' + ch.map(x => '<a href="' + x[0] + '"' + (x[0].startsWith("http") ? ' target="_blank" rel="noopener"' : "") + '>' + x[1] + '</a>').join("") + '</div>' +
-      '</div><div class="wrap foot-end">' + t("f_rights") + '</div></footer>';
+    $("#ftr").innerHTML = '<footer class="foot"><div class="foot-bar" aria-hidden="true"></div><div class="wrap foot-in">' +
+      '<a class="logo" href="' + url("index.html") + '" aria-label="DARCX">' + logoImg("mark") + '</a>' +
+      '<p class="foot-desc">' + t("f_desc") + '</p>' +
+      (ch.length ? '<div class="foot-links">' + ch.map(x => '<a href="' + x[0] + '" target="_blank" rel="noopener">' + x[1] + '</a>').join("") + '</div>' : "") +
+      '<p class="foot-end">' + t("f_rights") + '</p></div></footer>';
   }
 
   /* ---------- SEO ---------- */
@@ -235,17 +232,7 @@
     $$(".rv").forEach(e => io.observe(e));
   }
 
-  function menu(open) {
-    const m = $("#mm"), b = $("#burger");
-    m.classList.toggle("open", open); b.classList.toggle("open", open);
-    b.setAttribute("aria-expanded", open); m.setAttribute("aria-hidden", !open);
-    body.classList.toggle("lock", open);
-    if (open) $("#mm a").focus({ preventScroll: true });
-  }
-
   function bindShell() {
-    $("#burger").onclick = () => menu(!$("#mm").classList.contains("open"));
-    $$("#mm nav a, #mm .btn").forEach(a => a.addEventListener("click", () => menu(false)));
     $$(".js-lang").forEach(b => b.onclick = () => setLang(b.dataset.l));
     $$(".js-theme").forEach(b => b.onclick = toggleTheme);
   }
@@ -299,9 +286,8 @@
     body.classList.add("swap");
     setTimeout(() => {
       doc.lang = l; doc.dir = l === "ar" ? "rtl" : "ltr";
-      const open = $("#mm").classList.contains("open");
       renderHeader(); renderFooter(); renderPage(); bindShell(); onScroll();
-      if (open) { $("#mm").classList.add("open"); $("#burger").classList.add("open"); $("#burger").setAttribute("aria-expanded", "true"); $("#mm").setAttribute("aria-hidden", "false"); }
+      $("#bnav").classList.add("still");
       requestAnimationFrame(() => body.classList.remove("swap"));
     }, 160);
   }
@@ -316,8 +302,6 @@
   renderHeader(); renderFooter(); renderPage(); bindShell(); onScroll();
   let tick = false;
   addEventListener("scroll", () => { if (!tick) { tick = true; requestAnimationFrame(() => { onScroll(); tick = false; }); } }, { passive: true });
-  addEventListener("keydown", e => { if (e.key === "Escape" && $("#mm").classList.contains("open")) { menu(false); $("#burger").focus(); } });
-  addEventListener("resize", () => { if (innerWidth > 980) menu(false); });
   matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => { if (!store.get("dx-theme")) doc.dataset.theme = e.matches ? "light" : "dark"; });
   addEventListener("pageshow", e => { if (e.persisted) body.classList.remove("swap"); });
 })();

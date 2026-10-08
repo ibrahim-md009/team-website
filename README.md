@@ -4,13 +4,12 @@ Open `index.html` through any static host (or `python3 -m http.server`) — it w
 Upload the whole folder to Netlify / Vercel / GitHub Pages / any static hosting.
 
 ## Brand assets
-- `assets/js/logo.js` — the DARCX monogram geometry (single source of truth, used by the site).
-- `assets/logo/` — generated SVGs: `darcx-mark-{light,dark}.svg` (icon only), `darcx-logo-{light,dark}.svg`
-  (full lockup with DARCX / DIGITAL SOLUTIONS), `darcx-app-icon-{light,dark}.svg`.
-  "light" = for light backgrounds, "dark" = for dark backgrounds.
-- `assets/favicon.svg`, `assets/apple-touch-icon.png` — favicon / touch icon.
-- To change the logo: edit `assets/js/logo.js`, then run `python3 tools/make_logos.py` to regenerate the SVG files.
-- Brand colours and fonts: top of `assets/css/styles.css` (Plus Jakarta Sans + IBM Plex Sans Arabic).
+- The OFFICIAL DARCX logo is used as supplied: `tools/source/darcx-logo-official.png`.
+- `assets/logo/darcx-monogram.png` — the monogram on a transparent background (used in the top bar, hero and footer).
+- `assets/favicon.png`, `icon-192.png`, `icon-512.png`, `apple-touch-icon.png` — icon tiles built from the same logo.
+- To replace the logo later: overwrite `tools/source/darcx-logo-official.png` and run `python3 tools/make_logo_assets.py`
+  (needs `pip install pillow numpy scipy`; it only removes the flat dark background and crops).
+- Brand colours and fonts: top of `assets/css/styles.css`.
 
 ## Where to edit content
 - `assets/js/data.js` — contact channels, projects, services, process steps, technologies and all AR/EN text.
