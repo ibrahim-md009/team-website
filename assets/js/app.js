@@ -29,8 +29,10 @@
   const arrow = '<svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   /* The OFFICIAL DARCX monogram image (assets/logo/darcx-monogram.png) is used everywhere */
-  const LOGO = url("assets/logo/darcx-monogram.png");
-  function logoImg(cls) { return '<img class="' + (cls || "mark") + '" src="' + LOGO + '" alt="DARCX" width="584" height="339" decoding="async">'; }
+  function logoImg(cls) {
+    const big = cls === "hm-svg";   /* large hero version vs. small navbar/footer version (same artwork) */
+    return '<img class="' + (cls || "mark") + '" src="' + url("assets/logo/darcx-monogram" + (big ? "" : "-sm") + ".png") + '" alt="DARCX" width="1752" height="1017" decoding="async">';
+  }
 
   const icons = {
     websites: '<svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M6 17h36" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="13" r="1.3" fill="currentColor"/><circle cx="17" cy="13" r="1.3" fill="currentColor"/></svg>',

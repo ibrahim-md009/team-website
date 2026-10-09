@@ -22,21 +22,29 @@ alpha[~ndi.binary_dilation(m, iterations=3)] = 0
 alpha[core] = 1
 dark = denom < 900                                           # near-background colours (top of the D): use the shape mask instead
 alpha[dark & ndi.binary_dilation(m, iterations=1)] = ndi.gaussian_filter(m.astype(float), .8)[dark & ndi.binary_dilation(m, iterations=1)]
-# clean top of the D: solid, with a smooth dark gradient continuing the colours found lower down
+# clean top of the D: dark gradient continuing the colours found lower down.
+# Upper band: only repaint background-like pixels (never the beige ribbon); lower band: repaint the whole stem area.
 ys, xs = slice(334, 424), slice(486, 584)
 row = c_in[424, 486:584]; top = np.array([16, 20, 26], float)
 tt = ((np.arange(334, 424) - 334) / 90.0)[:, None, None]
-c_in[ys, xs] = top * (1 - tt) + row[None, :, :] * tt
-alpha[ys, xs] = 1.0
+grad = top * (1 - tt) + row[None, :, :] * tt
+sel = np.zeros(a.shape[:2], bool); sel[372:424, 486:584] = True
+sel[334:372, 486:584] = d[334:372, 486:584] < 60
+c_in[ys, xs][sel[ys, xs]] = grad[sel[ys, xs]]
+alpha[ys, xs][sel[ys, xs]] = 1.0
 alpha[ys, 486:488] = np.array([.5, 1.0])[None, :]
 mask = Image.fromarray((alpha * 255).astype(np.uint8))
 rgba = Image.fromarray(c_in.astype(np.uint8)).convert("RGBA"); rgba.putalpha(mask)
 bbox = mask.point(lambda v: 255 if v > 40 else 0).getbbox()
 x0, y0, x1, y1 = bbox; pad = 6
 rgba = rgba.crop((x0 - pad, y0 - pad, x1 + pad, y1 + pad))
-rgba = rgba.resize((rgba.width * 2, rgba.height * 2), Image.LANCZOS)
+rgba = rgba.resize((rgba.width * 3, rgba.height * 3), Image.LANCZOS)
+r_, g_, b_, a_ = rgba.split()
+rgb = Image.merge("RGB", (r_, g_, b_)).filter(ImageFilter.UnsharpMask(radius=1.6, percent=70, threshold=2))
+rgba = Image.merge("RGBA", (*rgb.split(), a_))
 os.makedirs("assets/logo", exist_ok=True)
 rgba.save("assets/logo/darcx-monogram.png", optimize=True)
+sm = rgba.resize((480, int(480 * rgba.height / rgba.width)), Image.LANCZOS); sm.save("assets/logo/darcx-monogram-sm.png", optimize=True)
 # app icon tiles (dark rounded square + official monogram)
 def tile(size, path, bgc=(14, 17, 22, 255), fill=.64):
     t = Image.new("RGBA", (size, size), (0, 0, 0, 0))
