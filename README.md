@@ -12,7 +12,7 @@ Upload the whole folder to Netlify / Vercel / GitHub Pages / any static hosting.
 - Brand colours and fonts: top of `assets/css/styles.css`.
 
 ## Where to edit content
-- `assets/js/data.js` — contact channels, projects, services, process steps, technologies and all AR/EN text.
+- `assets/js/data.js` — contact channels, projects, services, technologies and all AR/EN text.
 - `assets/js/app.js` — page rendering, language/theme/menu logic.
 - If you add a project in `data.js`, run `python3 build.py` to generate its page.
 

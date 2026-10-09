@@ -8,10 +8,9 @@ SEO = {
  "services": ("خدماتنا | DARCX", "مواقع إلكترونية، لوحات تحكم، تطبيقات جوال وأنظمة إدارة أعمال."),
  "projects": ("أعمالنا | DARCX", "مشاريع DARCX: البلد للمياه، كيو ستوديو، نظام نقاط البيع ونظام إدارة الاستوديو."),
  "about": ("من نحن | DARCX", "تعرّف على DARCX ومهاراتها والتقنيات التي تستخدمها."),
- "process": ("طريقة العمل | DARCX", "كيف نعمل من الفكرة حتى الإطلاق."),
  "contact": ("تواصل معنا | DARCX", "أرسل طلب مشروعك إلى DARCX."),
 }
-FILES = {"home": "index.html", "services": "services.html", "projects": "projects.html", "about": "about.html", "process": "process.html", "contact": "contact.html"}
+FILES = {"home": "index.html", "services": "services.html", "projects": "projects.html", "about": "about.html", "contact": "contact.html"}
 TPL = """<!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>

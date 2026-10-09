@@ -50,8 +50,6 @@
     systems: '<svg viewBox="0 0 48 48"><rect x="7" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="27" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="7" y="27" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="34" cy="34" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>'
   };
 
-  /* hero art: the official monogram on a quiet geometric field */
-  const heroGeo = '<div class="hero-mark">' + logoImg("hm-svg") + '</div>';
 
   /* generated preview used until real screenshots are added to data.js */
   function preview(p, big) {
@@ -108,7 +106,7 @@
         '<p class="lead fade">' + t("h_sub") + '</p>' +
         '<div class="btns fade"><a class="btn btn-fill" href="' + url("contact.html") + '">' + t("cta") + arrow + '</a><a class="btn btn-line" href="' + url("projects.html") + '">' + t("h_cta2") + '</a></div>' +
         '<p class="flow fade">' + t("h_flow").map(x => "<span>" + x + "</span>").join('<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M12 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>') + "</p>" +
-        '</div><div class="hero-art fade">' + heroGeo + '</div></div></section>' +
+        '</div></div></section>' +
 
         '<section class="band band-sand"><div class="wrap"><div class="sec-h rv"><div><h2>' + t("home_services_t") + '</h2><p>' + t("home_services_p") + '</p></div>' +
         '<a class="link" href="' + url("services.html") + '">' + t("all_services") + arrow + '</a></div>' +
@@ -169,14 +167,6 @@
         ctaBand(t("home_cta_t"), t("home_cta_p"));
     },
 
-    process() {
-      const cols = ["var(--sage)", "var(--blue)", "var(--olive)", "var(--taupe)", "var(--sand)"];
-      return pageHead(t("pr_page_t"), t("pr_page_p")) +
-        '<section class="sec"><div class="wrap"><ol class="tl" id="tl">' +
-        D.steps.map((s, i) => '<li class="rv" style="--ac:' + cols[i % cols.length] + '"><span class="tl-n">' + (i + 1) + '</span><div><h3>' + s[lang][0] + '</h3><p>' + s[lang][1] + '</p></div></li>').join("") +
-        '</ol></div></section>' + ctaBand(t("home_cta_t"), t("home_cta_p"));
-    },
-
     contact() {
       const m = channels().map(s => [s.href(D.contact[s.k]), s.label(), s.show(D.contact[s.k]), s.dot]);
       const opts = D.services.map(s => '<option value="' + s.id + '">' + L(s.name) + '</option>').join("") + '<option value="other">' + t("c_other") + '</option>';
@@ -194,13 +184,12 @@
   };
 
   /* ---------- top bar, bottom navigation, footer ---------- */
-  const NAV = [["home", "index.html"], ["projects", "projects.html"], ["services", "services.html"], ["process", "process.html"], ["about", "about.html"], ["contact", "contact.html"]];
+  const NAV = [["home", "index.html"], ["projects", "projects.html"], ["services", "services.html"], ["about", "about.html"], ["contact", "contact.html"]];
   const cur = () => (PAGE === "project" ? "projects" : PAGE);
   const ni = {
     home: '<path d="M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10"/>',
     projects: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
     services: '<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
-    process: '<circle cx="5.5" cy="6" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/><path d="M8 6h6a4 4 0 0 1 0 8h-4a4 4 0 0 0 0 4h6"/>',
     about: '<circle cx="12" cy="8" r="4"/><path d="M4.5 20c.8-4 3.7-6 7.5-6s6.7 2 7.5 6"/>',
     contact: '<path d="M4 5h16v11H9l-5 4z"/>'
   };
@@ -259,8 +248,6 @@
 
   function bindPage() {
     reveal();
-    const tl = $("#tl");
-    if (tl) tl.dataset.on = "1";
     $$(".chipf").forEach(b => b.onclick = () => {
       $$(".chipf").forEach(x => x.classList.toggle("on", x === b));
       $$(".pwrap").forEach(w => { w.hidden = !(b.dataset.f === "all" || w.dataset.k === b.dataset.f); });
@@ -324,8 +311,6 @@
 
   function onScroll() {
     const nav = $("#nav"); if (nav) nav.classList.toggle("scrolled", scrollY > 16);
-    const tl = $("#tl");
-    if (tl) { const r = tl.getBoundingClientRect(); tl.style.setProperty("--p", Math.min(1, Math.max(0, (innerHeight * 0.65 - r.top) / r.height))); }
   }
 
   /* ---------- bottom sheet picker (replaces the native select) ---------- */
@@ -387,7 +372,7 @@
   }
 
   /* ---------- in-page navigation (no reload, no flash) ---------- */
-  const PAGES = ["services", "projects", "about", "process", "contact"];
+  const PAGES = ["services", "projects", "about", "contact"];
   function routeOf(href) {
     let u; try { u = new URL(href, location.href); } catch (e) { return null; }
     if (!u.href.startsWith(BASE)) return null;
