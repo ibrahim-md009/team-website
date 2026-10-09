@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link, useRouter } from "../router.jsx";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../context.jsx";
 
 /* Edit this list to add / remove items in the bottom bar */
@@ -13,11 +13,12 @@ export const NAV = [
 
 export default function BottomNav() {
   const { t } = useApp();
-  const { loc, navigate } = useRouter();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const trackRef = useRef(null);
   const drag = useRef({ id: null, sx: 0, on: false, last: -1, skip: false });
 
-  const current = loc.path.startsWith("/projects") ? "projects" : (NAV.find(n => n.to === loc.path)?.id ?? null);
+  const current = pathname.startsWith("/projects") ? "projects" : (NAV.find(n => n.to === pathname)?.id ?? null);
   const idx = NAV.findIndex(n => n.id === current);
 
   const items = () => [...trackRef.current.querySelectorAll("a")];
@@ -78,7 +79,7 @@ export default function BottomNav() {
             <Link
               key={n.id} to={n.to} draggable="false"
               aria-current={n.id === current ? "page" : undefined}
-              onClick={() => { if (n.id === current && loc.path === n.to) scrollTo({ top: 0, behavior: "smooth" }); }}
+              onClick={() => { if (n.id === current && pathname === n.to) scrollTo({ top: 0, behavior: "smooth" }); }}
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">{n.icon}</svg>
               <span>{t("nav_" + n.id)}</span>

@@ -1,8 +1,10 @@
-import { Link } from "../router.jsx";
+import { Link, useParams } from "react-router-dom";
 import { useApp } from "../context.jsx";
 import { Arrow, CtaBand, PageHead, Preview } from "../components/ui.jsx";
+import Carousel from "../components/Carousel.jsx";
 
-export default function Project({ slug }) {
+export default function Project() {
+  const { slug } = useParams();
   const { t, L, D } = useApp();
   const idx = D.projects.findIndex(p => p.slug === slug);
   if (idx < 0) return <PageHead title={t("nf_t")} sub={t("nf_p")} />;
@@ -15,11 +17,18 @@ export default function Project({ slug }) {
           <span className="badge badge-ac rv">{L(p.cat)}</span>
           <h1 className="rv" style={{ "--d": ".05s" }}>{L(p.name)}</h1>
           <p className="rv" style={{ "--d": ".1s" }}>{L(p.short)}</p>
+          {p.link && (
+            <a className="btn btn-fill dvisit rv" style={{ "--d": ".14s" }} href={p.link} target="_blank" rel="noopener noreferrer">{t("visit")}<Arrow /></a>
+          )}
         </div>
       </header>
 
       <section className="sec dpre">
-        <div className="wrap"><div className="dpv rv reveal-img" style={{ "--ac": p.accent }}><Preview p={p} big /></div></div>
+        <div className="wrap">
+          {p.shots.length
+            ? <div className="rv"><Carousel images={p.shots} alt={L(p.name)} /></div>
+            : <div className="dpv rv reveal-img" style={{ "--ac": p.accent }}><Preview p={p} big /></div>}
+        </div>
       </section>
 
       <section className="sec dtxt" style={{ "--ac": p.accent }}>
@@ -38,21 +47,21 @@ export default function Project({ slug }) {
         </div>
       </section>
 
+      {p.dashShots.length > 0 && (
+        <section className="sec dash">
+          <div className="wrap">
+            <h2 className="rv">{t("d_dash")}</h2>
+            <div className="rv" style={{ "--d": ".06s" }}><Carousel images={p.dashShots} alt={L(p.name) + " — " + t("d_dash")} /></div>
+          </div>
+        </section>
+      )}
+
       <section className="band band-a" style={{ "--ac": p.accent }}>
         <div className="wrap ps">
           <div className="pbox rv"><span className="badge badge-ac">{t("d_problem")}</span><p>{L(p.problem)}</p></div>
           <div className="pbox pbox-s rv" style={{ "--d": ".08s" }}><span className="badge badge-ac">{t("d_solution")}</span><p>{L(p.solution)}</p></div>
         </div>
       </section>
-
-      {p.shots.length > 1 && (
-        <section className="sec">
-          <div className="wrap">
-            <h2 className="rv">{t("d_gallery")}</h2>
-            <div className="gal">{p.shots.map(s => <img key={s} className="rv" src={"/" + s} alt={L(p.name)} loading="lazy" />)}</div>
-          </div>
-        </section>
-      )}
 
       <section className="sec">
         <div className="wrap next rv">

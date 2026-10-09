@@ -18,10 +18,12 @@ const DARCX_DATA = {
   stack: ["HTML", "CSS", "JavaScript", "React", "Firebase", "Vite", "Tailwind CSS"],
 
   /* ---- Projects ----
-     tech:  list of technologies used on that project (section hides if empty)
-     shots: list of image paths, e.g. ["assets/img/elbalad-1.jpg"]
-            (the gallery section appears once you add screenshots)
-     kind:  "web" or "system" — picks the style of the generated preview      */
+     link:      the live website URL, e.g. "https://elbalad.com" (the "Visit website" button appears only when it is filled)
+     shots:     images of the website / app itself, e.g. ["assets/img/elbalad-1.jpg", "assets/img/elbalad-2.jpg"]
+                (files go in public/assets/img/ — they become the big slider on the project page; the first one is also the card cover)
+     dashShots: images of the project's dashboard (a second slider appears only when this list is not empty)
+     tech:      list of technologies used on that project (section hides if empty)
+     kind:      "web" or "system" — picks the style of the generated preview shown while there are no screenshots */
   projects: [
     {
       slug: "elbalad-water", kind: "web", accent: "#8998A8",
@@ -36,7 +38,7 @@ const DARCX_DATA = {
                   en: "The business needed a professional digital presence that introduces it to customers and makes it easy to reach." },
       solution: { ar: "صمّمنا ونفّذنا موقعًا بسيطًا وسريعًا يعرض المعلومات الأساسية بتسلسل واضح، ويعمل بكفاءة على الجوال.",
                   en: "We designed and built a simple, fast website that presents the essentials in a clear sequence and performs well on mobile." },
-      tech: [], shots: []
+      tech: [], link: "", shots: [], dashShots: []
     },
     {
       slug: "keo-studio", kind: "web", accent: "#B49D94",
@@ -51,7 +53,7 @@ const DARCX_DATA = {
                   en: "The studio needed a website that presents its work professionally and makes a strong first impression." },
       solution: { ar: "بنينا موقعًا يُبرز الهوية البصرية للاستوديو ويرتّب المحتوى ليصل الزائر إلى ما يبحث عنه بسرعة.",
                   en: "We built a site that showcases the studio's visual identity and arranges content so visitors find what they need quickly." },
-      tech: [], shots: []
+      tech: [], link: "", shots: [], dashShots: []
     },
     {
       slug: "pos-system", kind: "system", accent: "#A7B4A8",
@@ -66,7 +68,7 @@ const DARCX_DATA = {
                   en: "Managing sales and products through scattered methods takes time and increases the chance of errors." },
       solution: { ar: "جمعنا عمليات البيع وإدارة المنتجات في نظام واحد واضح، يسهل على الفريق استخدامه يوميًا.",
                   en: "We brought sales and product management into one clear system that the team can use easily every day." },
-      tech: [], shots: []
+      tech: [], link: "", shots: [], dashShots: []
     },
     {
       slug: "studio-management", kind: "system", accent: "#8E9A88",
@@ -81,7 +83,7 @@ const DARCX_DATA = {
                   en: "Work information spread across several tools and files makes it harder to follow and organise." },
       solution: { ar: "بنينا نظامًا واحدًا بلوحة تحكم تجمع ما يحتاجه الفريق لمتابعة العمل اليومي.",
                   en: "We built a single system with a dashboard that gathers what the team needs to follow daily work." },
-      tech: [], shots: []
+      tech: [], link: "", shots: [], dashShots: []
     }
   ],
 
@@ -110,7 +112,7 @@ const DARCX_DATA = {
     ar: {
       brand: "DARCX", skip: "تخطي إلى المحتوى",
       nav_home: "الرئيسية", nav_projects: "أعمالنا", nav_services: "خدماتنا", nav_about: "من نحن", nav_contact: "تواصل معنا",
-      cta: "ابدأ مشروعك", menu: "القائمة", close: "إغلاق", theme: "تبديل المظهر", language: "اللغة", more: "عرض المشروع",
+      cta: "ابدأ مشروعك", menu: "القائمة", close: "إغلاق", theme: "تبديل المظهر", language: "اللغة", more: "عرض المشروع", visit: "زيارة الموقع", d_dash: "لوحة التحكم", c_prev: "السابق", c_next: "التالي", c_goto: "الصورة",
       h_title: "نبني منتجات رقمية تعمل.", h_sub: "مواقع وتطبيقات وأنظمة إدارة مبنية حول عملك.",
       h_cta2: "شاهد أعمالنا", h_badge: "استوديو برمجيات", h_flow: ["أفكار", "كود", "حلول حقيقية"], f_tag: "نبني الرقمي معًا.",
       home_services_t: "ما الذي نبنيه", home_services_p: "أربع خدمات تغطي حضورك الرقمي والأنظمة التي يقوم عليها عملك.",
@@ -122,7 +124,7 @@ const DARCX_DATA = {
       p_page_t: "أعمالنا", p_page_p: "المشاريع التي نفذناها. افتح أي مشروع لتعرف تفاصيله.",
       f_all: "الكل", f_web: "مواقع إلكترونية", f_sys: "أنظمة إدارة أعمال",
       d_overview: "نظرة عامة", d_features: "أبرز المزايا", d_tech: "التقنيات", d_problem: "المشكلة", d_solution: "حلّنا",
-      d_gallery: "معرض الصور", d_back: "كل الأعمال", d_next: "المشروع التالي", d_cta_t: "تريد مشروعًا مشابهًا؟", d_cta_p: "تواصل معنا وأخبرنا بما تحتاجه.",
+      d_back: "كل الأعمال", d_next: "المشروع التالي", d_cta_t: "تريد مشروعًا مشابهًا؟", d_cta_p: "تواصل معنا وأخبرنا بما تحتاجه.",
       a_page_t: "من نحن", a_page_p: "DARCX استوديو برمجيات يصمّم وينفّذ حلولًا رقمية متكاملة للأعمال: مواقع، لوحات تحكم، تطبيقات جوال وأنظمة إدارة.",
       a_story_t: "قصتنا",
       a_story: ["DARCX استوديو برمجيات متخصص في تصميم وتطوير المواقع الإلكترونية ولوحات التحكم وتطبيقات الجوال وأنظمة إدارة الأعمال. نحوّل احتياج كل نشاط إلى منتج رقمي واضح وسهل الاستخدام.", "نعمل بفريق صغير ليحظى كل مشروع باهتمام مباشر ومتابعة دقيقة، ونصمّم كل واجهة منذ البداية بالعربية والإنجليزية وبالوضعين الفاتح والداكن، لتبقى التجربة متسقة على جميع الأجهزة."],
@@ -133,7 +135,7 @@ const DARCX_DATA = {
       c_form_t: "طلب مشروع", c_name: "الاسم", c_contact: "البريد الإلكتروني أو رقم الجوال", c_service: "نوع المشروع", c_msg: "تفاصيل المشروع",
       c_other: "غير ذلك", c_send: "إرسال الطلب", c_methods: "طرق التواصل", c_err: "يرجى تعبئة الاسم ووسيلة التواصل وتفاصيل المشروع.",
       c_ok_wa: "تم فتح واتساب وفيه رسالتك جاهزة. اضغط إرسال لتصلنا.", c_ok_mail: "تم فتح البريد برسالتك.", c_ok_copy: "تم نسخ رسالتك. الصقها في وسيلة التواصل التي تفضلها.",
-      c_wa: "واتساب", c_call: "اتصال", c_ig: "إنستغرام", c_mail: "البريد الإلكتروني", c_tg: "تلجرام", c_sending: "جارٍ الإرسال…", c_sent: "وصلتنا رسالتك بنجاح. سنتواصل معك قريبًا.", c_none: "استخدم نموذج الطلب وسنعود إليك.",
+      c_wa: "واتساب", c_call: "اتصال", c_ig: "إنستغرام", c_mail: "البريد الإلكتروني", c_tg: "تلجرام", c_none: "استخدم نموذج الطلب وسنعود إليك.",
       f_desc: "استوديو برمجيات يبني مواقع وتطبيقات وأنظمة إدارة مبنية حول عملك.", f_nav: "الصفحات", f_serv: "الخدمات", f_contact: "التواصل",
       f_rights: "© 2026 DARCX. جميع الحقوق محفوظة.",
       nf_t: "الصفحة غير موجودة", nf_p: "المشروع الذي تبحث عنه غير متوفر."
@@ -141,7 +143,7 @@ const DARCX_DATA = {
     en: {
       brand: "DARCX", skip: "Skip to content",
       nav_home: "Home", nav_projects: "Projects", nav_services: "Services", nav_about: "About", nav_contact: "Contact",
-      cta: "Start your project", menu: "Menu", close: "Close", theme: "Toggle theme", language: "Language", more: "View project",
+      cta: "Start your project", menu: "Menu", close: "Close", theme: "Toggle theme", language: "Language", more: "View project", visit: "Visit website", d_dash: "Dashboard", c_prev: "Previous", c_next: "Next", c_goto: "Image",
       h_title: "We build digital products that work.", h_sub: "Websites, applications and business systems built around your business.",
       h_cta2: "See our work", h_badge: "Software studio", h_flow: ["IDEAS", "CODE", "REAL SOLUTIONS"], f_tag: "Build Digital Together.",
       home_services_t: "What we build", home_services_p: "Four services covering your digital presence and the systems behind your business.",
@@ -153,7 +155,7 @@ const DARCX_DATA = {
       p_page_t: "Projects", p_page_p: "The projects we've built. Open any project to see the details.",
       f_all: "All", f_web: "Websites", f_sys: "Business systems",
       d_overview: "Overview", d_features: "Main features", d_tech: "Technologies", d_problem: "The problem", d_solution: "Our solution",
-      d_gallery: "Gallery", d_back: "All projects", d_next: "Next project", d_cta_t: "Want something similar?", d_cta_p: "Get in touch and tell us what you need.",
+      d_back: "All projects", d_next: "Next project", d_cta_t: "Want something similar?", d_cta_p: "Get in touch and tell us what you need.",
       a_page_t: "About DARCX", a_page_p: "DARCX is a software studio that designs and delivers complete digital solutions for businesses: websites, dashboards, mobile applications and management systems.",
       a_story_t: "Our story",
       a_story: ["DARCX is a software studio focused on designing and building websites, dashboards, mobile applications and business management systems. We turn each business's needs into a clear, dependable digital product.", "We work as a small team so every project receives direct attention and careful follow-through. Each interface is designed from the start in Arabic and English, in light and dark, so the experience stays consistent on every device."],
@@ -164,7 +166,7 @@ const DARCX_DATA = {
       c_form_t: "Project inquiry", c_name: "Name", c_contact: "Email or phone number", c_service: "Project type", c_msg: "Project details",
       c_other: "Something else", c_send: "Send inquiry", c_methods: "Ways to reach us", c_err: "Please fill in your name, a way to reach you and the project details.",
       c_ok_wa: "WhatsApp opened with your message ready. Tap send and it reaches us.", c_ok_mail: "Your email app opened with your message.", c_ok_copy: "Your message was copied. Paste it into the channel you prefer.",
-      c_wa: "WhatsApp", c_call: "Call", c_ig: "Instagram", c_mail: "Email", c_tg: "Telegram", c_sending: "Sending…", c_sent: "Your message was received. We'll be in touch soon.", c_none: "Use the inquiry form and we'll get back to you.",
+      c_wa: "WhatsApp", c_call: "Call", c_ig: "Instagram", c_mail: "Email", c_tg: "Telegram", c_none: "Use the inquiry form and we'll get back to you.",
       f_desc: "A software studio building websites, applications and business systems around your business.", f_nav: "Pages", f_serv: "Services", f_contact: "Contact",
       f_rights: "© 2026 DARCX. All rights reserved.",
       nf_t: "Page not found", nf_p: "The project you're looking for isn't available."

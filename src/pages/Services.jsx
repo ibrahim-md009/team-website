@@ -1,4 +1,4 @@
-import { Link } from "../router.jsx";
+import { Link } from "react-router-dom";
 import { useApp } from "../context.jsx";
 import { Arrow, CtaBand, PageHead, serviceIcons } from "../components/ui.jsx";
 

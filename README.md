@@ -9,6 +9,7 @@ npm run preview    # preview the build
 ```
 Deploy to Vercel as-is (framework preset: Vite). `vercel.json` rewrites every route to `index.html`
 and redirects the old `.html` URLs (`/about.html` → `/about`).
+Routing uses `react-router-dom`.
 
 ## Where to edit
 | What | File |
@@ -17,18 +18,26 @@ and redirects the old `.html` URLs (`/about.html` → `/about`).
 | Colours, fonts, spacing | top of `src/styles/styles.css` |
 | Pages | `src/pages/*.jsx` |
 | Bottom navigation items | `NAV` list in `src/components/BottomNav.jsx` (+ `nav_*` labels in `data.js`) |
-| Header / footer / cards / project preview | `src/components/*` |
+| Header / footer / cards / image slider | `src/components/*` |
 
-To add a project: add an object to `projects` in `src/data.js` — its page `/projects/<slug>` appears automatically (no build script needed).
-Screenshots: put images in `public/assets/img/` and list them in `shots: ["assets/img/name.jpg"]`.
+## Adding a project, its link and its images
+Each project is an object in the `projects` array in `src/data.js`:
+```js
+{
+  slug: "my-site", kind: "web", accent: "#8998A8",
+  name: {...}, cat: {...}, short: {...}, desc: {...}, features: {...}, problem: {...}, solution: {...},
+  tech: ["React", "Firebase"],
+  link: "https://my-site.com",                         // "Visit website" button (card + project page). Empty = no button
+  shots: ["assets/img/my-site-1.jpg", "assets/img/my-site-2.jpg"],     // big slider at the top of the project page
+  dashShots: ["assets/img/my-site-admin-1.jpg"]        // dashboard slider (shown only if not empty)
+}
+```
+Put the image files in `public/assets/img/` (16:9, e.g. 1600x900). The first `shots` image is also the card cover.
+Dots and arrows appear automatically when a slider has more than one image. The project page `/projects/<slug>` is created automatically.
 
-## Contact form (`api/contact.js`)
-Unchanged Vercel serverless function. Set these in Vercel → Settings → Environment Variables, then redeploy:
-- Telegram: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
-- WhatsApp (CallMeBot): `CALLMEBOT_APIKEY` (optional `OWNER_PHONE`)
-- Email (Resend): `RESEND_API_KEY`, `CONTACT_EMAIL`
-
-If none is set (or you run `npm run dev`, which has no functions), the form falls back to opening WhatsApp with the message ready.
+## Contact form
+No server. The form validates the fields, then opens WhatsApp with the message ready (number = `contact.whatsapp` in `data.js`).
+If WhatsApp is empty it falls back to email, then to copying the message.
 
 ## Logo
 `public/assets/logo/darcx-monogram.png` is used in the header and footer. The original source logo is kept in `design/`.

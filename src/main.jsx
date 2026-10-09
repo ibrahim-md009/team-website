@@ -1,13 +1,13 @@
 import { createRoot } from "react-dom/client";
-import { Router } from "./router.jsx";
+import { BrowserRouter } from "react-router-dom";
 import { AppProvider } from "./context.jsx";
 import App from "./App.jsx";
 import "./styles/styles.css";
 
 createRoot(document.getElementById("root")).render(
-  <Router>
+  <BrowserRouter>
     <AppProvider>
       <App />
     </AppProvider>
-  </Router>
+  </BrowserRouter>
 );

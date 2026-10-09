@@ -153,9 +153,13 @@ h3 { font-size: 1.15rem; }
 .scard p { color: var(--mut); font-size: .95rem; }
 .sicon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: var(--rad); background: var(--ac); color: var(--ink); }
 .sicon svg { width: 28px; height: 28px; }
-.pcard { display: flex; flex-direction: column; background: var(--surf); border: 1px solid var(--line); border-radius: var(--rad-lg); overflow: hidden; height: 100%; transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .3s; }
+.pcard { position: relative; display: flex; flex-direction: column; background: var(--surf); border: 1px solid var(--line); border-radius: var(--rad-lg); overflow: hidden; height: 100%; transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .3s; }
 .pcard:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--ac); }
+.pcard-main { display: flex; flex-direction: column; flex: 1; }
 .pcard-pv { overflow: hidden; }
+.pcard-act { padding: 0 24px 24px; }
+.dvisit { margin-block-start: 22px; }
+.dash h2 { margin-block-end: 20px; }
 .pcard-b { padding: 22px 24px 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; flex: 1; }
 .pcard-b p { color: var(--mut); font-size: .95rem; flex: 1; }
 .pcard-more { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .95rem; padding-block-start: 4px; border-block-end: 2px solid var(--ac); }
@@ -179,7 +183,7 @@ h3 { font-size: 1.15rem; }
 
 /* 6 ── PROJECT PREVIEWS (generated until real screenshots are added) ─── */
 .pv { position: relative; aspect-ratio: 16 / 10; background: var(--ac); display: grid; grid-template-rows: auto 1fr; padding: 9% 9% 0; overflow: hidden; }
-.pv-img { padding: 0; display: block; } .pv-img img { width: 100%; height: 100%; object-fit: cover; }
+.pv.pv-img { padding: 0; display: block; } .pv-img img { width: 100%; height: 100%; object-fit: cover; }
 .pv-bar { background: #F5F5F3; border-radius: 8px 8px 0 0; padding: 9px 12px; display: flex; gap: 5px; border-block-end: 1px solid rgba(14,17,22,.08); position: relative; z-index: 1; }
 .pv-bar i { width: 7px; height: 7px; border-radius: 50%; background: rgba(14,17,22,.22); }
 .pv-body { background: #FBFBFA; color: var(--ink); padding: 5%; position: relative; z-index: 1; transition: transform .6s var(--ease); display: grid; gap: 10px; }
@@ -220,7 +224,6 @@ h3 { font-size: 1.15rem; }
 .pbox { background: var(--surf); border-radius: var(--rad-lg); padding: clamp(22px, 4vw, 38px); border: 1px solid var(--line); }
 .pbox p { margin-block-start: 16px; font-size: 1.08rem; }
 .pbox-s { border-color: var(--ac); }
-.gal { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-block-start: 24px; } .gal img { border-radius: var(--rad); width: 100%; }
 .next { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-block-start: 1px solid var(--line); padding-block-start: 32px; color: var(--mut); }
 .story p { margin-block-end: 16px; font-size: 1.08rem; }
 .srow-in { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(24px, 6vw, 80px); align-items: center; }
@@ -237,6 +240,21 @@ h3 { font-size: 1.15rem; }
 .ex { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: var(--rad); background: var(--surf); border: 1px solid var(--line); font-weight: 600; transition: transform .3s var(--ease), border-color .3s; }
 .ex .arr { margin-inline-start: auto; } .ex:hover { transform: translateX(4px); border-color: var(--ac); }
 [dir="rtl"] .ex:hover { transform: translateX(-4px); }
+
+/* image slider (project pages) */
+.car-view { position: relative; border-radius: var(--rad-lg); overflow: hidden; background: var(--surf); border: 1px solid var(--line); }
+.car-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.car-track::-webkit-scrollbar { display: none; }
+.car-slide { flex: 0 0 100%; scroll-snap-align: center; aspect-ratio: 16 / 9; }
+.car-slide img { width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; }
+.car-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--nav); color: var(--fg); border: 1px solid var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .3s var(--ease), background-color .3s; z-index: 2; }
+.car-btn:hover { transform: translateY(-50%) scale(1.08); }
+.car-btn svg { width: 20px; height: 20px; }
+.car-l { left: 12px; } .car-r { right: 12px; }
+.car-dots { display: flex; justify-content: center; gap: 8px; padding-block-start: 16px; }
+.car-dot { width: 9px; height: 9px; border-radius: 9px; background: color-mix(in srgb, var(--mut) 45%, transparent); transition: width .35s var(--ease), background-color .3s; }
+.car-dot.on { width: 26px; background: var(--fg); }
+@media (max-width: 640px) { .car-btn { width: 38px; height: 38px; } .car-l { left: 8px; } .car-r { right: 8px; } }
 
 /* 8 ── FORM ───────────────────────────────────────────────────────────── */
 .cgrid { display: grid; grid-template-columns: 1.3fr .7fr; gap: clamp(24px, 6vw, 72px); align-items: start; }
@@ -338,7 +356,7 @@ html.tx *, html.tx *::before, html.tx *::after { transition: background-color .4
   .grid3 { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  .grid2, .gal { grid-template-columns: 1fr; } .grid4 { grid-template-columns: 1fr; }
+  .grid2 { grid-template-columns: 1fr; } .grid4 { grid-template-columns: 1fr; }
   .scard { flex-direction: row; flex-wrap: wrap; align-items: center; } .scard h3 { flex: 1; } .scard p { flex-basis: 100%; }
   .btns .btn, .cta .btn { width: 100%; }
   .hero { padding-block-start: 92px; } .cta-shapes i:nth-child(1) { width: 110px; height: 110px; }
@@ -351,6 +369,3 @@ html.tx *, html.tx *::before, html.tx *::after { transition: background-color .4
 @media (max-width: 380px) { .pcard-b { padding: 18px; } }
 
 
-.hp { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.cform[data-busy] .btn { opacity: .7; }
-.btn:disabled { cursor: progress; transform: none; }

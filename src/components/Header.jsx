@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useRouter } from "../router.jsx";
+import { Link, useLocation } from "react-router-dom";
 import { useApp } from "../context.jsx";
 import { Logo } from "./ui.jsx";
 
 export default function Header() {
   const { t, lang, setLang, toggleTheme } = useApp();
-  const { loc } = useRouter();
+  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function Header() {
       <a className="skip" href="#app">{t("skip")}</a>
       <header className={"nav" + (scrolled ? " scrolled" : "")} id="nav">
         <div className="wrap nav-in">
-          <Link className="logo" to="/" aria-label="DARCX" onClick={() => { if (loc.path === "/") scrollTo({ top: 0, behavior: "smooth" }); }}>
+          <Link className="logo" to="/" aria-label="DARCX" onClick={() => { if (pathname === "/") scrollTo({ top: 0, behavior: "smooth" }); }}>
             <Logo />
           </Link>
           <div className="tools">

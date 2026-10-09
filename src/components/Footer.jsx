@@ -1,4 +1,4 @@
-import { Link } from "../router.jsx";
+import { Link } from "react-router-dom";
 import { useApp } from "../context.jsx";
 import { Logo } from "./ui.jsx";
 import { channels } from "../channels.jsx";
