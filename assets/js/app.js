@@ -5,7 +5,16 @@
    ========================================================================== */
 (function () {
   "use strict";
-  const D = DARCX_DATA;
+  let D = window.DARCX_DATA;
+  window.DARCX_APPLY_CONTENT = function (content) {
+    if (!content || typeof content !== "object") return;
+    if (Array.isArray(content.stack)) D.stack = content.stack;
+    if (Array.isArray(content.skills)) D.skills = content.skills;
+    if (Array.isArray(content.projects)) D.projects = content.projects;
+    if (Array.isArray(content.services)) D.services = content.services;
+    if (Array.isArray(content.categories)) D.categories = content.categories;
+    renderHeader(); renderFooter(); renderPage(); bindShell(); onScroll();
+  };
   const body = document.body;
   /* absolute site root, derived from this script's own location (works in any sub-folder) */
   const BASE = new URL("../../", document.currentScript.src).href;
@@ -23,7 +32,7 @@
   const t = k => D.i18n[lang][k];
   const L = o => o[lang];
   const url = p => BASE + p;
-  const projectUrl = s => url("projects/" + s + ".html");
+  const projectUrl = s => url("projects.html?project=" + encodeURIComponent(s));
 
   /* ---------- small building blocks ---------- */
   const arrow = '<svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -63,7 +72,7 @@
 
   function serviceCard(s, i) {
     return '<a class="scard rv" style="--ac:' + s.accent + ';--d:' + (i * 0.07) + 's" href="' + url("services.html#" + s.id) + '">' +
-      '<span class="sicon">' + icons[s.id] + '</span><h3>' + L(s.name) + '</h3><p>' + L(s.desc) + '</p></a>';
+      '<span class="sicon">' + (icons[s.id] || icons.websites) + '</span><h3>' + L(s.name) + '</h3><p>' + L(s.desc) + '</p></a>';
   }
 
   function pageHead(title, sub) {
@@ -128,8 +137,8 @@
     projects() {
       return pageHead(t("p_page_t"), t("p_page_p")) +
         '<section class="sec"><div class="wrap"><div class="filters rv" role="group">' +
-        '<button class="chipf on" data-f="all">' + t("f_all") + '</button><button class="chipf" data-f="web">' + t("f_web") + '</button><button class="chipf" data-f="system">' + t("f_sys") + '</button></div>' +
-        '<div class="grid2" id="plist">' + D.projects.map((p, i) => '<div class="pwrap" data-k="' + p.kind + '">' + projectCard(p, i) + '</div>').join("") + '</div></div></section>' +
+        '<button class="chipf on" data-f="all">' + t("f_all") + '</button>' + (D.categories || []).map(c => '<button class="chipf" data-f="' + c.id + '">' + L(c.name) + '</button>').join("") + '</div>' +
+        '<div class="grid2" id="plist">' + D.projects.map((p, i) => '<div class="pwrap" data-k="' + (p.categoryId || p.kind || "") + '">' + projectCard(p, i) + '</div>').join("") + '</div></div></section>' +
         ctaBand(t("home_cta_t"), t("home_cta_p"));
     },
 
@@ -139,7 +148,7 @@
       const p = D.projects[idx], nx = D.projects[(idx + 1) % D.projects.length];
       return '<header class="phead dhead" style="--ac:' + p.accent + '"><div class="wrap"><a class="back" href="' + url("projects.html") + '">' + arrow + t("d_back") + '</a>' +
         '<span class="badge badge-ac rv">' + L(p.cat) + '</span><h1 class="rv" style="--d:.05s">' + L(p.name) + '</h1><p class="rv" style="--d:.1s">' + L(p.short) + '</p></div></header>' +
-        '<section class="sec dpre"><div class="wrap"><div class="dpv rv reveal-img" style="--ac:' + p.accent + '">' + preview(p, true) + '</div></div></section>' +
+        '<section class="sec dpre"><div class="wrap"><div class="dpv rv reveal-img" style="--ac:' + p.accent + '">' + preview(p, true) + '</div>' + (p.url ? '<p class="project-live-link"><a class="btn btn-line" href="' + p.url + '" target="_blank" rel="noopener noreferrer">' + (lang === 'ar' ? 'زيارة الموقع' : 'Visit live website') + arrow + '</a></p>' : '') + '</div></section>' +
         '<section class="sec dtxt" style="--ac:' + p.accent + '"><div class="wrap dgrid"><div class="rv"><h2>' + t("d_overview") + '</h2><p class="lead">' + L(p.desc) + '</p></div>' +
         '<div class="rv" style="--d:.08s"><h2>' + t("d_features") + '</h2><ul class="ticks">' + L(p.features).map(x => "<li>" + x + "</li>").join("") + '</ul>' +
         (p.tech.length ? '<h3 class="mini">' + t("d_tech") + '</h3><div class="tags">' + p.tech.map(x => '<span class="tag" dir="ltr">' + x + '</span>').join("") + '</div>' : "") + '</div></div></section>' +
@@ -155,7 +164,7 @@
         '<section class="sec"><div class="wrap dgrid"><div class="rv"><h2>' + t("a_story_t") + '</h2></div><div class="rv story" style="--d:.08s">' + t("a_story").map(x => "<p>" + x + "</p>").join("") + '</div></div></section>' +
         '<section class="band band-sand"><div class="wrap"><h2 class="rv">' + t("a_values_t") + '</h2><div class="grid3">' +
         t("a_values").map((v, i) => '<div class="vcard rv" style="--d:' + i * 0.07 + 's"><span class="dot" style="background:' + ["var(--sage)", "var(--blue)", "var(--taupe)"][i] + '"></span><h3>' + v[0] + '</h3><p>' + v[1] + '</p></div>').join("") + '</div></div></section>' +
-        '<section class="sec"><div class="wrap dgrid"><div class="rv"><h2>' + t("a_skills_t") + '</h2><div class="tags">' + D.services.map(s => '<span class="tag" style="--ac:' + s.accent + '"><i class="dot"></i>' + L(s.name) + '</span>').join("") + '</div></div>' +
+        '<section class="sec"><div class="wrap dgrid"><div class="rv"><h2>' + t("a_skills_t") + '</h2><div class="tags">' + (D.skills || []).map(s => '<span class="tag" style="--ac:' + (s.accent || '#A7B4A8') + '"><i class="dot"></i>' + (typeof s.name === 'object' ? L(s.name) : s.name) + '</span>').join("") + '</div></div>' +
         '<div class="rv" style="--d:.08s"><h2>' + t("a_stack_t") + '</h2><div class="tags">' + D.stack.map(x => '<span class="tag tag-plain" dir="ltr">' + x + '</span>').join("") + '</div></div></div></section>' +
         ctaBand(t("home_cta_t"), t("home_cta_p"));
     },
@@ -385,6 +394,8 @@
     const path = u.href.slice(BASE.length).split(/[?#]/)[0].replace(/\.html$/, "").replace(/\/$/, "");
     if (path === "" || path === "index") return { page: "home", slug: "", u };
     if (PAGES.includes(path)) return { page: path, slug: "", u };
+    const requestedProject = u.searchParams.get("project");
+    if ((path === "projects" || path === "projects.html") && requestedProject && D.projects.some(p => p.slug === requestedProject)) return { page: "project", slug: requestedProject, u };
     const m = path.match(/^projects\/([\w-]+)$/);
     if (m && D.projects.some(p => p.slug === m[1])) return { page: "project", slug: m[1], u };
     return null;
@@ -416,6 +427,7 @@
 
   /* ---------- init ---------- */
   renderHeader(); renderFooter(); renderPage(); bindShell(); onScroll();
+  if (window.__DARCX_PENDING_CONTENT) window.DARCX_APPLY_CONTENT(window.__DARCX_PENDING_CONTENT);
   let tick = false;
   addEventListener("scroll", () => { if (!tick) { tick = true; requestAnimationFrame(() => { onScroll(); tick = false; }); } }, { passive: true });
   matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => { if (!store.get("dx-theme")) doc.dataset.theme = e.matches ? "light" : "dark"; });

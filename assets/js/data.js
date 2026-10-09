@@ -3,7 +3,7 @@
    Everything editable lives here: contact details, projects, services,
    process steps, technologies and all Arabic / English interface text.
    ========================================================================== */
-const DARCX_DATA = {
+window.DARCX_DATA = {
 
   /* ---- Contact channels. Empty values are hidden. instagram / telegram / x / tiktok: username without @;
      facebook / linkedin: page name as in the URL; email: full address ---- */
