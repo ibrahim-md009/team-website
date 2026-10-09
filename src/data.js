@@ -1,7 +1,7 @@
 /* ==========================================================================
    DARCX — central content file.
    Everything editable lives here: contact details, projects, services,
-   process steps, technologies and all Arabic / English interface text.
+   technologies and all Arabic / English interface text.
    ========================================================================== */
 const DARCX_DATA = {
 
@@ -105,25 +105,11 @@ const DARCX_DATA = {
       points: { ar: ["نقاط البيع وإدارة المنتجات", "تنظيم العمل اليومي والمهام", "تقارير ومعلومات في مكان واحد", "تصميم يناسب طبيعة نشاطك"], en: ["Point of sale and product management", "Organised daily work and tasks", "Reports and information in one place", "A design that fits the nature of your business"] } }
   ],
 
-  /* ---- Process ---- */
-  steps: [
-    { ar: ["الفكرة والاستكشاف", "نفهم نشاطك وعملاءك وما تريد تحقيقه، ونحدد نطاق المشروع وأولوياته قبل أي تصميم."],
-      en: ["Idea and discovery", "We learn about your business, your customers and what you want to achieve, then define the scope and priorities before any design."] },
-    { ar: ["التخطيط والتصميم", "نرتب الصفحات والمحتوى ونصمم الواجهات باللغتين وبالوضعين الفاتح والداكن، ونعرضها عليك قبل البناء."],
-      en: ["Planning and design", "We structure the pages and content and design the interface in both languages and both themes, then review it with you before building."] },
-    { ar: ["البناء", "نبرمج المشروع على مراحل ونعرض لك التقدم باستمرار لتتمكن من التعديل مبكرًا."],
-      en: ["Development", "We build the project in stages and show progress regularly so changes can be made early."] },
-    { ar: ["الاختبار والمراجعة", "نجرّب المشروع على الجوال والحاسب ونصلح الملاحظات حتى يعمل كما هو متوقع."],
-      en: ["Testing and review", "We test on phone and desktop and fix feedback until everything works as expected."] },
-    { ar: ["الإطلاق والمتابعة", "ننشر المشروع على الإنترنت ونبقى على تواصل لمعالجة أي ملاحظات بعد الإطلاق."],
-      en: ["Launch and follow-up", "We publish the project online and stay in touch to handle anything that comes up after launch."] }
-  ],
-
   /* ---- Interface text ---- */
   i18n: {
     ar: {
       brand: "DARCX", skip: "تخطي إلى المحتوى",
-      nav_home: "الرئيسية", nav_projects: "أعمالنا", nav_services: "خدماتنا", nav_process: "طريقة العمل", nav_about: "من نحن", nav_contact: "تواصل معنا",
+      nav_home: "الرئيسية", nav_projects: "أعمالنا", nav_services: "خدماتنا", nav_about: "من نحن", nav_contact: "تواصل معنا",
       cta: "ابدأ مشروعك", menu: "القائمة", close: "إغلاق", theme: "تبديل المظهر", language: "اللغة", more: "عرض المشروع",
       h_title: "نبني منتجات رقمية تعمل.", h_sub: "مواقع وتطبيقات وأنظمة إدارة مبنية حول عملك.",
       h_cta2: "شاهد أعمالنا", h_badge: "استوديو برمجيات", h_flow: ["أفكار", "كود", "حلول حقيقية"], f_tag: "نبني الرقمي معًا.",
@@ -143,7 +129,6 @@ const DARCX_DATA = {
       a_values_t: "كيف نفكر",
       a_values: [["الوضوح", "نبني واجهات مباشرة ومفهومة، يصل فيها المستخدم إلى هدفه بأقل عدد من الخطوات."], ["الأداء", "نعتني بسرعة التحميل وسلاسة الاستخدام، بدءًا من الجوال ثم سطح المكتب."], ["الإتقان", "نهتم بالتفاصيل: الخطوط والمسافات والتناسق، واتجاه الصفحة الصحيح في اللغة العربية."]],
       a_skills_t: "مهاراتنا", a_stack_t: "التقنيات التي نستخدمها",
-      pr_page_t: "طريقة العمل", pr_page_p: "مسار واضح من الفكرة حتى الإطلاق، تعرف فيه أين وصل مشروعك في كل مرحلة.",
       c_page_t: "تواصل معنا", c_page_p: "أخبرنا عن مشروعك وسنعود إليك.",
       c_form_t: "طلب مشروع", c_name: "الاسم", c_contact: "البريد الإلكتروني أو رقم الجوال", c_service: "نوع المشروع", c_msg: "تفاصيل المشروع",
       c_other: "غير ذلك", c_send: "إرسال الطلب", c_methods: "طرق التواصل", c_err: "يرجى تعبئة الاسم ووسيلة التواصل وتفاصيل المشروع.",
@@ -155,7 +140,7 @@ const DARCX_DATA = {
     },
     en: {
       brand: "DARCX", skip: "Skip to content",
-      nav_home: "Home", nav_projects: "Projects", nav_services: "Services", nav_process: "Process", nav_about: "About", nav_contact: "Contact",
+      nav_home: "Home", nav_projects: "Projects", nav_services: "Services", nav_about: "About", nav_contact: "Contact",
       cta: "Start your project", menu: "Menu", close: "Close", theme: "Toggle theme", language: "Language", more: "View project",
       h_title: "We build digital products that work.", h_sub: "Websites, applications and business systems built around your business.",
       h_cta2: "See our work", h_badge: "Software studio", h_flow: ["IDEAS", "CODE", "REAL SOLUTIONS"], f_tag: "Build Digital Together.",
@@ -175,7 +160,6 @@ const DARCX_DATA = {
       a_values_t: "How we think",
       a_values: [["Clarity", "We build direct, understandable interfaces that help users reach their goal in as few steps as possible."], ["Performance", "We care about load speed and smooth interaction, designed for mobile first and then desktop."], ["Craft", "We pay close attention to detail: typography, spacing, consistency and correct right-to-left layout in Arabic."]],
       a_skills_t: "Skills", a_stack_t: "Technologies we use",
-      pr_page_t: "How we work", pr_page_p: "A clear path from idea to launch, so you always know where your project stands.",
       c_page_t: "Contact", c_page_p: "Tell us about your project and we'll get back to you.",
       c_form_t: "Project inquiry", c_name: "Name", c_contact: "Email or phone number", c_service: "Project type", c_msg: "Project details",
       c_other: "Something else", c_send: "Send inquiry", c_methods: "Ways to reach us", c_err: "Please fill in your name, a way to reach you and the project details.",
@@ -193,7 +177,9 @@ const DARCX_DATA = {
     services: { ar: ["خدماتنا | DARCX", "مواقع إلكترونية، لوحات تحكم، تطبيقات جوال وأنظمة إدارة أعمال."], en: ["Services | DARCX", "Websites, dashboards, mobile applications and business management systems."] },
     projects: { ar: ["أعمالنا | DARCX", "مشاريع DARCX: البلد للمياه، كيو ستوديو، نظام نقاط البيع ونظام إدارة الاستوديو."], en: ["Projects | DARCX", "DARCX projects: El Balad Water, KEO Studio, the Business POS System and the Studio Management System."] },
     about:    { ar: ["من نحن | DARCX", "تعرّف على DARCX ومهاراتها والتقنيات التي تستخدمها."], en: ["About | DARCX", "Get to know DARCX, its skills and the technologies it uses."] },
-    process:  { ar: ["طريقة العمل | DARCX", "كيف نعمل من الفكرة حتى الإطلاق."], en: ["Process | DARCX", "How we work from idea to launch."] },
     contact:  { ar: ["تواصل معنا | DARCX", "أرسل طلب مشروعك إلى DARCX."], en: ["Contact | DARCX", "Send your project inquiry to DARCX."] }
   }
 };
+
+
+export default DARCX_DATA;
