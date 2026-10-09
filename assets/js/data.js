@@ -5,10 +5,14 @@
    ========================================================================== */
 const DARCX_DATA = {
 
-  /* ---- Contact channels. Leave a value empty to hide that channel. ----
-     whatsapp: number with country code, digits only (e.g. "9665xxxxxxxx")
-     instagram: username without @      email: full address               */
-  contact: { email: "", whatsapp: "", instagram: "" },
+  /* ---- Contact channels. Empty values are hidden. instagram / telegram / x / tiktok: username without @;
+     facebook / linkedin: page name as in the URL; email: full address ---- */
+  contact: {
+    whatsapp: "972567574848",        /* digits only, with country code */
+    phone: "+972567574848",
+    email: "", instagram: "", telegram: "", facebook: "", linkedin: "", x: "", tiktok: ""
+    /* fill any empty channel (username / handle only) and its icon appears automatically in the footer and contact page */
+  },
 
   /* ---- Technologies shown on the About page ---- */
   stack: ["HTML", "CSS", "JavaScript", "React", "Firebase", "Vite", "Tailwind CSS"],
@@ -143,8 +147,8 @@ const DARCX_DATA = {
       c_page_t: "تواصل معنا", c_page_p: "أخبرنا عن مشروعك وسنعود إليك.",
       c_form_t: "طلب مشروع", c_name: "الاسم", c_contact: "البريد الإلكتروني أو رقم الجوال", c_service: "نوع المشروع", c_msg: "تفاصيل المشروع",
       c_other: "غير ذلك", c_send: "إرسال الطلب", c_methods: "طرق التواصل", c_err: "يرجى تعبئة الاسم ووسيلة التواصل وتفاصيل المشروع.",
-      c_ok_wa: "تم فتح واتساب برسالتك.", c_ok_mail: "تم فتح البريد برسالتك.", c_ok_copy: "تم نسخ رسالتك. الصقها في وسيلة التواصل التي تفضلها.",
-      c_wa: "واتساب", c_ig: "إنستغرام", c_mail: "البريد الإلكتروني", c_none: "استخدم نموذج الطلب وسنعود إليك.",
+      c_ok_wa: "تم فتح واتساب وفيه رسالتك جاهزة. اضغط إرسال لتصلنا.", c_ok_mail: "تم فتح البريد برسالتك.", c_ok_copy: "تم نسخ رسالتك. الصقها في وسيلة التواصل التي تفضلها.",
+      c_wa: "واتساب", c_call: "اتصال", c_ig: "إنستغرام", c_mail: "البريد الإلكتروني", c_tg: "تلجرام", c_sending: "جارٍ الإرسال…", c_sent: "وصلتنا رسالتك بنجاح. سنتواصل معك قريبًا.", c_none: "استخدم نموذج الطلب وسنعود إليك.",
       f_desc: "استوديو برمجيات يبني مواقع وتطبيقات وأنظمة إدارة مبنية حول عملك.", f_nav: "الصفحات", f_serv: "الخدمات", f_contact: "التواصل",
       f_rights: "© 2026 DARCX. جميع الحقوق محفوظة.",
       nf_t: "الصفحة غير موجودة", nf_p: "المشروع الذي تبحث عنه غير متوفر."
@@ -175,8 +179,8 @@ const DARCX_DATA = {
       c_page_t: "Contact", c_page_p: "Tell us about your project and we'll get back to you.",
       c_form_t: "Project inquiry", c_name: "Name", c_contact: "Email or phone number", c_service: "Project type", c_msg: "Project details",
       c_other: "Something else", c_send: "Send inquiry", c_methods: "Ways to reach us", c_err: "Please fill in your name, a way to reach you and the project details.",
-      c_ok_wa: "WhatsApp opened with your message.", c_ok_mail: "Your email app opened with your message.", c_ok_copy: "Your message was copied. Paste it into the channel you prefer.",
-      c_wa: "WhatsApp", c_ig: "Instagram", c_mail: "Email", c_none: "Use the inquiry form and we'll get back to you.",
+      c_ok_wa: "WhatsApp opened with your message ready. Tap send and it reaches us.", c_ok_mail: "Your email app opened with your message.", c_ok_copy: "Your message was copied. Paste it into the channel you prefer.",
+      c_wa: "WhatsApp", c_call: "Call", c_ig: "Instagram", c_mail: "Email", c_tg: "Telegram", c_sending: "Sending…", c_sent: "Your message was received. We'll be in touch soon.", c_none: "Use the inquiry form and we'll get back to you.",
       f_desc: "A software studio building websites, applications and business systems around your business.", f_nav: "Pages", f_serv: "Services", f_contact: "Contact",
       f_rights: "© 2026 DARCX. All rights reserved.",
       nf_t: "Page not found", nf_p: "The project you're looking for isn't available."

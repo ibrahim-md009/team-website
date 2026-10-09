@@ -10,7 +10,7 @@ bg = np.median(a[:40, :40].reshape(-1, 3), axis=0)
 d = np.abs(a - bg).sum(2)
 from scipy import ndimage as ndi
 m = d > 45
-m[332:400, 484:585] = True                                  # the top of the D fades into the background colour: keep it solid
+m[334:424, 486:584] = True                                  # the top of the D fades into the background colour: keep it solid
 lab, n = ndi.label(m); sizes = ndi.sum(m, lab, range(1, n + 1))
 m = np.isin(lab, [i + 1 for i, v in enumerate(sizes) if v > 400])   # drop specks
 core = ndi.binary_erosion(m, iterations=3)
@@ -22,6 +22,13 @@ alpha[~ndi.binary_dilation(m, iterations=3)] = 0
 alpha[core] = 1
 dark = denom < 900                                           # near-background colours (top of the D): use the shape mask instead
 alpha[dark & ndi.binary_dilation(m, iterations=1)] = ndi.gaussian_filter(m.astype(float), .8)[dark & ndi.binary_dilation(m, iterations=1)]
+# clean top of the D: solid, with a smooth dark gradient continuing the colours found lower down
+ys, xs = slice(334, 424), slice(486, 584)
+row = c_in[424, 486:584]; top = np.array([16, 20, 26], float)
+tt = ((np.arange(334, 424) - 334) / 90.0)[:, None, None]
+c_in[ys, xs] = top * (1 - tt) + row[None, :, :] * tt
+alpha[ys, xs] = 1.0
+alpha[ys, 486:488] = np.array([.5, 1.0])[None, :]
 mask = Image.fromarray((alpha * 255).astype(np.uint8))
 rgba = Image.fromarray(c_in.astype(np.uint8)).convert("RGBA"); rgba.putalpha(mask)
 bbox = mask.point(lambda v: 255 if v > 40 else 0).getbbox()

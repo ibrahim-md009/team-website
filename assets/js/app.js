@@ -40,7 +40,7 @@
   };
 
   /* hero art: the official monogram on a quiet geometric field */
-  const heroGeo = '<div class="hero-mark"><i class="hm-corner"></i><i class="hm-line l1"></i><i class="hm-line l2"></i>' + logoImg("hm-svg") + '</div>';
+  const heroGeo = '<div class="hero-mark">' + logoImg("hm-svg") + '</div>';
 
   /* generated preview used until real screenshots are added to data.js */
   function preview(p, big) {
@@ -75,11 +75,24 @@
       '<a class="btn btn-sage rv" style="--d:.1s" href="' + url("contact.html") + '">' + t("cta") + arrow + '</a></div></section>';
   }
 
+  /* ---------- contact channels (from data.js) ---------- */
+  const SOCIAL = [
+    { k: "whatsapp", label: () => t("c_wa"), href: v => "https://wa.me/" + v, show: v => "+" + v, dot: "var(--sage)", ic: '<path d="M20 11.5a8 8 0 0 1-11.7 7.1L4 20l1.4-4.1A8 8 0 1 1 20 11.5z"/><path d="M9 8.8c.3 2.4 2.600 4.700 5.200 5.300l1-1.200-1.800-.9-.9.800c-.9-.4-1.700-1.200-2.100-2.100l.8-.9-.9-1.800z"/>' },
+    { k: "phone", label: () => t("c_call"), href: v => "tel:" + v, show: v => v, dot: "var(--blue)", ic: '<path d="M5 4h4l1.500 4-2 1.300a11 11 0 0 0 5.200 5.200L15 12.500l4 1.500v4a2 2 0 0 1-2 2A13 13 0 0 1 3 6a2 2 0 0 1 2-2z"/>' },
+    { k: "instagram", label: () => t("c_ig"), href: v => "https://instagram.com/" + v, show: v => "@" + v, dot: "var(--taupe)", ic: '<rect x="4" y="4" width="16" height="16" rx="4.500"/><circle cx="12" cy="12" r="3.600"/><circle cx="16.800" cy="7.200" r=".6"/>' },
+    { k: "email", label: () => t("c_mail"), href: v => "mailto:" + v, show: v => v, dot: "var(--sand)", ic: '<rect x="3.500" y="5.500" width="17" height="13" rx="2.500"/><path d="M4 8l8 5.500L20 8"/>' },
+    { k: "telegram", label: () => t("c_tg"), href: v => "https://t.me/" + v, show: v => "@" + v, dot: "var(--blue)", ic: '<path d="M20.500 4.500L3.500 11l5 2 2 5.500 3-3.500 4.500 3.500z"/><path d="M8.500 13l8-5.500"/>' },
+    { k: "facebook", label: () => "Facebook", href: v => "https://facebook.com/" + v, show: v => v, dot: "var(--blue)", ic: '<path d="M14 21v-8h2.700l.5-3.300H14V7.600c0-1 .4-1.600 1.700-1.600h1.600V3.200C17 3.100 16 3 14.900 3 12.500 3 11 4.400 11 7v2.700H8.300V13H11v8z"/>' },
+    { k: "linkedin", label: () => "LinkedIn", href: v => "https://linkedin.com/company/" + v, show: v => v, dot: "var(--blue)", ic: '<rect x="4" y="9" width="3.500" height="11"/><circle cx="5.800" cy="5.500" r="1.800"/><path d="M10.500 20v-11h3.300v1.600c.6-1 1.800-1.900 3.400-1.900 2.800 0 3.800 1.800 3.800 4.600V20h-3.500v-5.800c0-1.300-.4-2.200-1.700-2.200s-2 1-2 2.300V20z"/>' },
+    { k: "x", label: () => "X", href: v => "https://x.com/" + v, show: v => "@" + v, dot: "var(--taupe)", ic: '<path d="M4 4l16 16M20 4L4 20"/>' },
+    { k: "tiktok", label: () => "TikTok", href: v => "https://tiktok.com/@" + v, show: v => "@" + v, dot: "var(--olive)", ic: '<path d="M14 4v11a3.500 3.500 0 1 1-3.500-3.500M14 4c.4 2.300 1.900 3.700 4.500 3.900"/>' }
+  ];
+  const channels = () => SOCIAL.filter(s => D.contact[s.k]);
+
   /* ---------- pages ---------- */
   const pages = {
     home() {
       return '<section class="hero"><div class="wrap hero-in"><div class="hero-txt">' +
-        '<span class="badge badge-sage fade">' + t("h_badge") + '</span>' +
         '<h1><span class="ln"><span>' + t("h_title") + '</span></span></h1>' +
         '<p class="lead fade">' + t("h_sub") + '</p>' +
         '<div class="btns fade"><a class="btn btn-fill" href="' + url("contact.html") + '">' + t("cta") + arrow + '</a><a class="btn btn-line" href="' + url("projects.html") + '">' + t("h_cta2") + '</a></div>' +
@@ -154,13 +167,10 @@
     },
 
     contact() {
-      const c = D.contact, m = [];
-      if (c.whatsapp) m.push(['https://wa.me/' + c.whatsapp, t("c_wa"), "+" + c.whatsapp, "var(--sage)"]);
-      if (c.instagram) m.push(['https://instagram.com/' + c.instagram, t("c_ig"), "@" + c.instagram, "var(--taupe)"]);
-      if (c.email) m.push(['mailto:' + c.email, t("c_mail"), c.email, "var(--blue)"]);
+      const m = channels().map(s => [s.href(D.contact[s.k]), s.label(), s.show(D.contact[s.k]), s.dot]);
       const opts = D.services.map(s => '<option value="' + s.id + '">' + L(s.name) + '</option>').join("") + '<option value="other">' + t("c_other") + '</option>';
       return pageHead(t("c_page_t"), t("c_page_p")) +
-        '<section class="sec"><div class="wrap cgrid"><form class="cform rv" id="cform" novalidate><h2>' + t("c_form_t") + '</h2>' +
+        '<section class="sec"><div class="wrap cgrid"><form class="cform rv" id="cform" novalidate><h2>' + t("c_form_t") + '</h2><input class="hp" name="website" id="chp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
         '<div class="fld"><input id="cn" placeholder=" " autocomplete="name" required><label for="cn">' + t("c_name") + '</label></div>' +
         '<div class="fld"><input id="cc" placeholder=" " autocomplete="email" required dir="auto"><label for="cc">' + t("c_contact") + '</label></div>' +
         '<div class="fld fld-s"><button type="button" class="sel" id="csb" aria-haspopup="dialog" aria-expanded="false"><span id="csv"></span><svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button><label>' + t("c_service") + '</label><select id="cs" tabindex="-1" aria-hidden="true">' + opts + '</select></div>' +
@@ -201,14 +211,11 @@
   }
 
   function renderFooter() {
-    const c = D.contact, ch = [];
-    if (c.whatsapp) ch.push(['https://wa.me/' + c.whatsapp, t("c_wa")]);
-    if (c.instagram) ch.push(['https://instagram.com/' + c.instagram, t("c_ig")]);
-    if (c.email) ch.push(['mailto:' + c.email, t("c_mail")]);
+    const ch = channels();
     $("#ftr").innerHTML = '<footer class="foot"><div class="foot-bar" aria-hidden="true"></div><div class="wrap foot-in">' +
       '<a class="logo" href="' + url("index.html") + '" aria-label="DARCX">' + logoImg("mark") + '</a>' +
       '<p class="foot-desc">' + t("f_desc") + '</p>' +
-      (ch.length ? '<div class="foot-links">' + ch.map(x => '<a href="' + x[0] + '" target="_blank" rel="noopener">' + x[1] + '</a>').join("") + '</div>' : "") +
+      (ch.length ? '<div class="foot-soc">' + ch.map(s => '<a class="soc" href="' + s.href(D.contact[s.k]) + '" target="_blank" rel="noopener" aria-label="' + s.label() + '" title="' + s.label() + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + s.ic + '</svg></a>').join("") + '</div>' : "") +
       '<p class="foot-end">' + t("f_rights") + '</p></div></footer>';
   }
 
@@ -257,19 +264,27 @@
     if (location.hash && $(location.hash)) setTimeout(() => $(location.hash).scrollIntoView(), 80);
   }
 
-  function submitForm(e) {
+  async function submitForm(e) {
     e.preventDefault();
+    const f = e.target, btn = $("button[type=submit]", f), note = $("#cnote");
     const n = $("#cn").value.trim(), c = $("#cc").value.trim(), m = $("#cm").value.trim();
-    const note = $("#cnote");
     if (!n || !c || !m) { note.textContent = t("c_err"); note.className = "note err"; return; }
     const sOpt = $("#cs").selectedOptions[0].textContent;
     const text = t("c_name") + ": " + n + "\n" + t("c_contact") + ": " + c + "\n" + t("c_service") + ": " + sOpt + "\n\n" + m;
+    note.className = "note"; note.textContent = t("c_sending"); btn.disabled = true; f.classList.add("busy");
+    let sent = false;
+    try {
+      const r = await fetch(url("api/contact"), { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: n, contact: c, service: sOpt, message: m, website: $("#chp") ? $("#chp").value : "", lang }) });
+      sent = r.ok;
+    } catch (_) {}
+    btn.disabled = false; f.classList.remove("busy");
     const ct = D.contact;
-    note.className = "note";
-    if (ct.whatsapp) { window.open("https://wa.me/" + ct.whatsapp + "?text=" + encodeURIComponent(text), "_blank", "noopener"); note.textContent = t("c_ok_wa"); }
-    else if (ct.email) { location.href = "mailto:" + ct.email + "?subject=" + encodeURIComponent(t("brand") + " — " + sOpt) + "&body=" + encodeURIComponent(text); note.textContent = t("c_ok_mail"); }
+    if (sent) { note.textContent = t("c_sent"); f.reset(); setSel(); return; }
+    /* fallback when the server function is not set up: open WhatsApp with the message ready */
+    if (ct.whatsapp) { window.open("https://wa.me/" + ct.whatsapp + "?text=" + encodeURIComponent(text), "_blank", "noopener"); note.textContent = t("c_ok_wa"); f.reset(); setSel(); }
+    else if (ct.email) { location.href = "mailto:" + ct.email + "?subject=" + encodeURIComponent(t("brand") + " — " + sOpt) + "&body=" + encodeURIComponent(text); note.textContent = t("c_ok_mail"); f.reset(); setSel(); }
     else { (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).catch(() => {}); note.textContent = t("c_ok_copy"); }
-    e.target.reset(); setSel();
   }
 
   function toggleTheme() {

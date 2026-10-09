@@ -16,6 +16,23 @@ Upload the whole folder to Netlify / Vercel / GitHub Pages / any static hosting.
 - `assets/js/app.js` — page rendering, language/theme/menu logic.
 - If you add a project in `data.js`, run `python3 build.py` to generate its page.
 
+## Receiving form messages (api/contact.js)
+The contact form posts to `/api/contact` (a Vercel serverless function in `api/contact.js`). It delivers each inquiry to you
+through whichever channel you configure. Add the variables in Vercel → Project → Settings → Environment Variables, then redeploy:
+
+| Channel | Variables | Notes |
+|---|---|---|
+| Telegram (recommended) | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | Create a bot with @BotFather, send it a message, get your chat id (e.g. via @userinfobot). Instant and free. |
+| WhatsApp | `CALLMEBOT_APIKEY` (optional `OWNER_PHONE`, default 972567574848) | Free CallMeBot service: message the CallMeBot number once to get your key (callmebot.com). |
+| Email | `RESEND_API_KEY`, `CONTACT_EMAIL` | resend.com account. |
+
+If none is configured (or the site is hosted without functions), the form falls back to opening WhatsApp with the message ready;
+the visitor then taps send.
+
+## Contact channels
+Edit `contact` in `assets/js/data.js`. WhatsApp and phone are set; add `instagram`, `telegram`, `email`, `facebook`, `linkedin`, `x` or `tiktok`
+and its icon appears in the footer and contact page automatically.
+
 ## Before launch
 1. Set `contact` in `data.js` (empty channels are hidden; the form uses WhatsApp, else email, else copies the message).
 2. Review the project texts in `data.js` and add screenshots (`shots: [...]`) and technologies (`tech: [...]`).
