@@ -5,16 +5,7 @@
    ========================================================================== */
 (function () {
   "use strict";
-  let D = window.DARCX_DATA;
-  window.DARCX_APPLY_CONTENT = function (content) {
-    if (!content || typeof content !== "object") return;
-    if (Array.isArray(content.stack)) D.stack = content.stack;
-    if (Array.isArray(content.skills)) D.skills = content.skills;
-    if (Array.isArray(content.projects)) D.projects = content.projects;
-    if (Array.isArray(content.services)) D.services = content.services;
-    if (Array.isArray(content.categories)) D.categories = content.categories;
-    renderHeader(); renderFooter(); renderPage(); bindShell(); onScroll();
-  };
+  const D = DARCX_DATA;
   const body = document.body;
   /* absolute site root, derived from this script's own location (works in any sub-folder) */
   const BASE = new URL("../../", document.currentScript.src).href;
@@ -32,16 +23,14 @@
   const t = k => D.i18n[lang][k];
   const L = o => o[lang];
   const url = p => BASE + p;
-  const projectUrl = s => url("projects.html?project=" + encodeURIComponent(s));
+  const projectUrl = s => url("projects/" + s + ".html");
 
   /* ---------- small building blocks ---------- */
   const arrow = '<svg class="arr" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   /* The OFFICIAL DARCX monogram image (assets/logo/darcx-monogram.png) is used everywhere */
-  function logoImg(cls) {
-    const big = cls === "hm-svg";   /* large hero version vs. small navbar/footer version (same artwork) */
-    return '<img class="' + (cls || "mark") + '" src="' + url("assets/logo/darcx-monogram" + (big ? "" : "-sm") + ".png") + '" alt="DARCX" width="1752" height="1017" decoding="async">';
-  }
+  const LOGO = url("assets/logo/darcx-monogram.png");
+  function logoImg(cls) { return '<img class="' + (cls || "mark") + '" src="' + LOGO + '" alt="DARCX" width="584" height="339" decoding="async">'; }
 
   const icons = {
     websites: '<svg viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="30" rx="5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M6 17h36" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="13" r="1.3" fill="currentColor"/><circle cx="17" cy="13" r="1.3" fill="currentColor"/></svg>',
@@ -50,6 +39,8 @@
     systems: '<svg viewBox="0 0 48 48"><rect x="7" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="27" y="7" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="7" y="27" width="14" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="34" cy="34" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>'
   };
 
+  /* hero art: the official monogram on a quiet geometric field */
+  const heroGeo = '<div class="hero-mark">' + logoImg("hm-svg") + '</div>';
 
   /* generated preview used until real screenshots are added to data.js */
   function preview(p, big) {
@@ -70,7 +61,7 @@
 
   function serviceCard(s, i) {
     return '<a class="scard rv" style="--ac:' + s.accent + ';--d:' + (i * 0.07) + 's" href="' + url("services.html#" + s.id) + '">' +
-      '<span class="sicon">' + (icons[s.id] || icons.websites) + '</span><h3>' + L(s.name) + '</h3><p>' + L(s.desc) + '</p></a>';
+      '<span class="sicon">' + icons[s.id] + '</span><h3>' + L(s.name) + '</h3><p>' + L(s.desc) + '</p></a>';
   }
 
   function pageHead(title, sub) {
@@ -106,7 +97,7 @@
         '<p class="lead fade">' + t("h_sub") + '</p>' +
         '<div class="btns fade"><a class="btn btn-fill" href="' + url("contact.html") + '">' + t("cta") + arrow + '</a><a class="btn btn-line" href="' + url("projects.html") + '">' + t("h_cta2") + '</a></div>' +
         '<p class="flow fade">' + t("h_flow").map(x => "<span>" + x + "</span>").join('<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M12 6l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>') + "</p>" +
-        '</div></div></section>' +
+        '</div><div class="hero-art fade">' + heroGeo + '</div></div></section>' +
 
         '<section class="band band-sand"><div class="wrap"><div class="sec-h rv"><div><h2>' + t("home_services_t") + '</h2><p>' + t("home_services_p") + '</p></div>' +
         '<a class="link" href="' + url("services.html") + '">' + t("all_services") + arrow + '</a></div>' +
@@ -135,8 +126,8 @@
     projects() {
       return pageHead(t("p_page_t"), t("p_page_p")) +
         '<section class="sec"><div class="wrap"><div class="filters rv" role="group">' +
-        '<button class="chipf on" data-f="all">' + t("f_all") + '</button>' + (D.categories || []).map(c => '<button class="chipf" data-f="' + c.id + '">' + L(c.name) + '</button>').join("") + '</div>' +
-        '<div class="grid2" id="plist">' + D.projects.map((p, i) => '<div class="pwrap" data-k="' + (p.categoryId || p.kind || "") + '">' + projectCard(p, i) + '</div>').join("") + '</div></div></section>' +
+        '<button class="chipf on" data-f="all">' + t("f_all") + '</button><button class="chipf" data-f="web">' + t("f_web") + '</button><button class="chipf" data-f="system">' + t("f_sys") + '</button></div>' +
+        '<div class="grid2" id="plist">' + D.projects.map((p, i) => '<div class="pwrap" data-k="' + p.kind + '">' + projectCard(p, i) + '</div>').join("") + '</div></div></section>' +
         ctaBand(t("home_cta_t"), t("home_cta_p"));
     },
 
@@ -146,7 +137,7 @@
       const p = D.projects[idx], nx = D.projects[(idx + 1) % D.projects.length];
       return '<header class="phead dhead" style="--ac:' + p.accent + '"><div class="wrap"><a class="back" href="' + url("projects.html") + '">' + arrow + t("d_back") + '</a>' +
         '<span class="badge badge-ac rv">' + L(p.cat) + '</span><h1 class="rv" style="--d:.05s">' + L(p.name) + '</h1><p class="rv" style="--d:.1s">' + L(p.short) + '</p></div></header>' +
-        '<section class="sec dpre"><div class="wrap"><div class="dpv rv reveal-img" style="--ac:' + p.accent + '">' + preview(p, true) + '</div>' + (p.url ? '<p class="project-live-link"><a class="btn btn-line" href="' + p.url + '" target="_blank" rel="noopener noreferrer">' + (lang === 'ar' ? 'زيارة الموقع' : 'Visit live website') + arrow + '</a></p>' : '') + '</div></section>' +
+        '<section class="sec dpre"><div class="wrap"><div class="dpv rv reveal-img" style="--ac:' + p.accent + '">' + preview(p, true) + '</div></div></section>' +
         '<section class="sec dtxt" style="--ac:' + p.accent + '"><div class="wrap dgrid"><div class="rv"><h2>' + t("d_overview") + '</h2><p class="lead">' + L(p.desc) + '</p></div>' +
         '<div class="rv" style="--d:.08s"><h2>' + t("d_features") + '</h2><ul class="ticks">' + L(p.features).map(x => "<li>" + x + "</li>").join("") + '</ul>' +
         (p.tech.length ? '<h3 class="mini">' + t("d_tech") + '</h3><div class="tags">' + p.tech.map(x => '<span class="tag" dir="ltr">' + x + '</span>').join("") + '</div>' : "") + '</div></div></section>' +
@@ -162,9 +153,17 @@
         '<section class="sec"><div class="wrap dgrid"><div class="rv"><h2>' + t("a_story_t") + '</h2></div><div class="rv story" style="--d:.08s">' + t("a_story").map(x => "<p>" + x + "</p>").join("") + '</div></div></section>' +
         '<section class="band band-sand"><div class="wrap"><h2 class="rv">' + t("a_values_t") + '</h2><div class="grid3">' +
         t("a_values").map((v, i) => '<div class="vcard rv" style="--d:' + i * 0.07 + 's"><span class="dot" style="background:' + ["var(--sage)", "var(--blue)", "var(--taupe)"][i] + '"></span><h3>' + v[0] + '</h3><p>' + v[1] + '</p></div>').join("") + '</div></div></section>' +
-        '<section class="sec"><div class="wrap dgrid"><div class="rv"><h2>' + t("a_skills_t") + '</h2><div class="tags">' + (D.skills || []).map(s => '<span class="tag" style="--ac:' + (s.accent || '#A7B4A8') + '"><i class="dot"></i>' + (typeof s.name === 'object' ? L(s.name) : s.name) + '</span>').join("") + '</div></div>' +
+        '<section class="sec"><div class="wrap dgrid"><div class="rv"><h2>' + t("a_skills_t") + '</h2><div class="tags">' + D.services.map(s => '<span class="tag" style="--ac:' + s.accent + '"><i class="dot"></i>' + L(s.name) + '</span>').join("") + '</div></div>' +
         '<div class="rv" style="--d:.08s"><h2>' + t("a_stack_t") + '</h2><div class="tags">' + D.stack.map(x => '<span class="tag tag-plain" dir="ltr">' + x + '</span>').join("") + '</div></div></div></section>' +
         ctaBand(t("home_cta_t"), t("home_cta_p"));
+    },
+
+    process() {
+      const cols = ["var(--sage)", "var(--blue)", "var(--olive)", "var(--taupe)", "var(--sand)"];
+      return pageHead(t("pr_page_t"), t("pr_page_p")) +
+        '<section class="sec"><div class="wrap"><ol class="tl" id="tl">' +
+        D.steps.map((s, i) => '<li class="rv" style="--ac:' + cols[i % cols.length] + '"><span class="tl-n">' + (i + 1) + '</span><div><h3>' + s[lang][0] + '</h3><p>' + s[lang][1] + '</p></div></li>').join("") +
+        '</ol></div></section>' + ctaBand(t("home_cta_t"), t("home_cta_p"));
     },
 
     contact() {
@@ -184,12 +183,13 @@
   };
 
   /* ---------- top bar, bottom navigation, footer ---------- */
-  const NAV = [["home", "index.html"], ["projects", "projects.html"], ["services", "services.html"], ["about", "about.html"], ["contact", "contact.html"]];
+  const NAV = [["home", "index.html"], ["projects", "projects.html"], ["services", "services.html"], ["process", "process.html"], ["about", "about.html"], ["contact", "contact.html"]];
   const cur = () => (PAGE === "project" ? "projects" : PAGE);
   const ni = {
     home: '<path d="M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10"/>',
     projects: '<rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/>',
     services: '<path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',
+    process: '<circle cx="5.5" cy="6" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/><path d="M8 6h6a4 4 0 0 1 0 8h-4a4 4 0 0 0 0 4h6"/>',
     about: '<circle cx="12" cy="8" r="4"/><path d="M4.5 20c.8-4 3.7-6 7.5-6s6.7 2 7.5 6"/>',
     contact: '<path d="M4 5h16v11H9l-5 4z"/>'
   };
@@ -248,6 +248,8 @@
 
   function bindPage() {
     reveal();
+    const tl = $("#tl");
+    if (tl) tl.dataset.on = "1";
     $$(".chipf").forEach(b => b.onclick = () => {
       $$(".chipf").forEach(x => x.classList.toggle("on", x === b));
       $$(".pwrap").forEach(w => { w.hidden = !(b.dataset.f === "all" || w.dataset.k === b.dataset.f); });
@@ -311,6 +313,8 @@
 
   function onScroll() {
     const nav = $("#nav"); if (nav) nav.classList.toggle("scrolled", scrollY > 16);
+    const tl = $("#tl");
+    if (tl) { const r = tl.getBoundingClientRect(); tl.style.setProperty("--p", Math.min(1, Math.max(0, (innerHeight * 0.65 - r.top) / r.height))); }
   }
 
   /* ---------- bottom sheet picker (replaces the native select) ---------- */
@@ -372,15 +376,13 @@
   }
 
   /* ---------- in-page navigation (no reload, no flash) ---------- */
-  const PAGES = ["services", "projects", "about", "contact"];
+  const PAGES = ["services", "projects", "about", "process", "contact"];
   function routeOf(href) {
     let u; try { u = new URL(href, location.href); } catch (e) { return null; }
     if (!u.href.startsWith(BASE)) return null;
     const path = u.href.slice(BASE.length).split(/[?#]/)[0].replace(/\.html$/, "").replace(/\/$/, "");
     if (path === "" || path === "index") return { page: "home", slug: "", u };
     if (PAGES.includes(path)) return { page: path, slug: "", u };
-    const requestedProject = u.searchParams.get("project");
-    if ((path === "projects" || path === "projects.html") && requestedProject && D.projects.some(p => p.slug === requestedProject)) return { page: "project", slug: requestedProject, u };
     const m = path.match(/^projects\/([\w-]+)$/);
     if (m && D.projects.some(p => p.slug === m[1])) return { page: "project", slug: m[1], u };
     return null;
@@ -412,7 +414,6 @@
 
   /* ---------- init ---------- */
   renderHeader(); renderFooter(); renderPage(); bindShell(); onScroll();
-  if (window.__DARCX_PENDING_CONTENT) window.DARCX_APPLY_CONTENT(window.__DARCX_PENDING_CONTENT);
   let tick = false;
   addEventListener("scroll", () => { if (!tick) { tick = true; requestAnimationFrame(() => { onScroll(); tick = false; }); } }, { passive: true });
   matchMedia("(prefers-color-scheme: light)").addEventListener("change", e => { if (!store.get("dx-theme")) doc.dataset.theme = e.matches ? "light" : "dark"; });

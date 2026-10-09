@@ -1,1 +1,1 @@
-{ "cleanUrls": true, "redirects": [{ "source": "/process", "destination": "/", "permanent": true }] }
+{ "cleanUrls": true }
